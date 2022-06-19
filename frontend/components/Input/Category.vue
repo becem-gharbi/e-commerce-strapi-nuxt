@@ -25,7 +25,9 @@ export default {
   props: {
     value: {
       type: Object,
-      default: () => ({}),
+      default: () => ({
+        id: 1,
+      }),
     },
     required: {
       type: Boolean,
