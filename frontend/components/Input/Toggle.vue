@@ -6,7 +6,7 @@
         :name="name"
         class="form-check-input"
         type="checkbox"
-        :value="value"
+        :checked="value"
     /></span>
   </div>
 </template>

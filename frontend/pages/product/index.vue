@@ -7,7 +7,7 @@
         </div>
         <div class="col-auto ms-auto">
           <div class="btn-list">
-            <NuxtLink class="btn btn-primary" to="/product/add">
+            <button class="btn btn-primary" @click="addProduct">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="icon icon-tabler icon-tabler-plus"
@@ -28,8 +28,8 @@
                 <line x1="12" y1="5" x2="12" y2="19"></line>
                 <line x1="5" y1="12" x2="19" y2="12"></line>
               </svg>
-              Add Product</NuxtLink
-            >
+              Add Product
+            </button>
           </div>
         </div>
       </div>
@@ -66,6 +66,26 @@ export default {
         user: $auth.user.id,
       },
     });
+  },
+
+  methods: {
+    addProduct() {
+      if (!this.$auth.user.location) {
+        this.$swal.fire({
+          padding: "0.2rem",
+          title:
+            "<p class='h3'>" +
+            "Please complete your account details to add products" +
+            "</p>",
+          showConfirmButton: false,
+          timer: 7000,
+          timerProgressBar: false,
+          icon: "warning",
+        });
+        return this.$router.replace("/user/account");
+      }
+      this.$router.push("/product/add");
+    },
   },
 };
 </script>

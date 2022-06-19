@@ -24,7 +24,29 @@
         </div>
 
         <div class="form-footer">
-          <button type="submit" class="btn btn-primary w-100">Sign in</button>
+          <ButtonAsync
+            label="Sign in"
+            type="submit"
+            class="btn btn-primary w-100"
+          ></ButtonAsync>
+          <div class="hr-text">OR</div>
+          <a type="button" class="btn w-100 btn-google" :href="googleLoginUrl">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-brand-google"
+              width="40"
+              height="40"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+              <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8"></path></svg
+            >Sign with Google</a
+          >
         </div>
       </div>
     </form>
@@ -39,6 +61,11 @@
 export default {
   auth: false,
   layout: "auth",
+  data: function () {
+    return {
+      googleLoginUrl: `${process.env.STRAPI_URL}/api/connect/google`,
+    };
+  },
   methods: {
     async handleSubmit(event) {
       try {

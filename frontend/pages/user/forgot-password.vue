@@ -13,15 +13,16 @@
           :required="true"
         ></InputBase>
         <div class="form-footer">
-          <button type="submit" class="btn btn-primary w-100">
-            Reset Password
-          </button>
+          <ButtonAsync
+            label="Reset Password"
+            type="submit"
+            class="btn btn-primary w-100"
+          ></ButtonAsync>
         </div>
       </div>
     </form>
     <div class="text-center text-muted mt-3">
-      Forget it, <NuxtLink to="/">send me back</NuxtLink> to the sign
-      in screen.
+      Forget it, <NuxtLink to="/">send me back</NuxtLink> to the sign in screen.
     </div>
   </div>
 </template>

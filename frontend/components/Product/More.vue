@@ -25,7 +25,6 @@
                 alt=""
                 height="250px"
                 style="object-fit: contain"
-                
               />
             </div>
             <div class="col-md-7">

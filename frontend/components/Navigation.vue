@@ -9,13 +9,7 @@
     <div class="container-fluid">
       <h1 class="navbar-brand navbar-brand-autodark me-3">
         <NuxtLink to="/home">
-          <img
-            :src="require('/assets/logo.svg')"
-            width="110"
-            height="32"
-            alt="Tabler"
-            class="navbar-brand-image"
-          />
+          <cite>BRAND</cite>
         </NuxtLink>
       </h1>
       <button

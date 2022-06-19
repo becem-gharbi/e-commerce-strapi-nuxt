@@ -18,13 +18,11 @@
           type="password"
         ></InputBase>
         <div class="form-footer">
-          <button
+          <ButtonAsync
+            label="Reset Password"
             type="submit"
             class="btn btn-primary w-100"
-            :class="{ disabled: loading }"
-          >
-            Reset Password
-          </button>
+          ></ButtonAsync>
         </div>
       </div>
     </form>
@@ -39,24 +37,16 @@
 export default {
   auth: false,
   layout: "auth",
-  data: function () {
-    return {
-      loading: false,
-    };
-  },
   methods: {
     async handleSubmit(event) {
       try {
-        this.loading = true;
         await this.$axios.post("auth/reset-password", {
           code: this.$route.query.code,
           password: event.target.password.value,
           passwordConfirmation: event.target.passwordConfirmation.value,
         });
         this.$router.replace("/");
-      } catch (e) {
-        this.loading = false;
-      }
+      } catch (e) {}
     },
   },
 };

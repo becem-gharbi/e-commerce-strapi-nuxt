@@ -130,7 +130,9 @@ export default {
 
   data: function () {
     return {
-      currency: this.$auth.user.location.currency,
+      currency: this.$auth.user.location
+        ? this.$auth.user.location.currency
+        : null,
     };
   },
 

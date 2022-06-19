@@ -1,16 +1,11 @@
 <template>
   <div class="page page-center">
     <div class="py-4">
-      <div class="text-center mb-4">
-        <NuxtLink to="/" class="navbar-brand navbar-brand-autodark"
-          ><img :src="require('/assets/logo.svg')" height="36" alt=""
-        /></NuxtLink>
-      </div>
       <Nuxt></Nuxt>
       <div class="text-center mt-4">
         <a
           href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
-          class="btn btn-github"
+          class="btn"
           target="_blank"
         >
           <svg

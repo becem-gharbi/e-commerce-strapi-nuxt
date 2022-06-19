@@ -7,28 +7,11 @@
             <h2 class="page-title">Add Product</h2>
           </div>
           <div class="col-auto ms-auto">
-            <button
-              class="btn btn-primary"
-              :class="{ disabled: isLoading }"
+            <ButtonAsync
+              label="Add"
               type="submit"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-plus"
-                width="40"
-                height="40"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line></svg
-              >Add
-            </button>
+              class="btn btn-primary"
+            ></ButtonAsync>
           </div>
         </div>
       </div>
@@ -71,13 +54,11 @@ export default {
   data: function () {
     return {
       errors: [],
-      isLoading: false,
     };
   },
 
   methods: {
     handleSubmit(event) {
-      this.isLoading = true;
 
       const data = {};
       const formData = new FormData();
@@ -100,7 +81,6 @@ export default {
         .post("/products", formData)
         .then(() => this.$router.replace("/product"))
         .catch((err) => {
-          this.isLoading = false;
           this.errors = Array.from(err.response.data.error.details.errors);
         });
     },

@@ -48,10 +48,15 @@
                 step="10"
               />
             </div>
-
-            <button data-bs-dismiss="modal" type="submit" class="btn">
-              Submit
-            </button>
+            <div class="modal-footer p-0">
+              <button
+                data-bs-dismiss="modal"
+                type="submit"
+                class="btn btn-primary"
+              >
+                Submit
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -70,9 +75,11 @@ export default {
 
   data: function () {
     return {
-      selectedPriceMax: 50,
       priceMax: 3000,
-      currency: this.$auth.user.location.currency,
+      selectedPriceMax: 3000,
+      currency: this.$auth.user.location
+        ? this.$auth.user.location.currency
+        : null,
     };
   },
 
@@ -97,9 +104,10 @@ export default {
         name: {
           $containsi: event.target.search.value,
         },
-        category: !event.target.category.value
-          ? {}
-          : event.target.category.value,
+        category:
+          !event.target.category.value || event.target.category.value == 1
+            ? {}
+            : event.target.category.value,
         price: {
           $lt: event.target.selectedPriceMax.value,
         },

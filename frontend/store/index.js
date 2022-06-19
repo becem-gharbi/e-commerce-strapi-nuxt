@@ -14,9 +14,7 @@ export const getters = {
             name: state.product.attributes.name,
             description: state.product.attributes.description,
             price: state.product.attributes.price,
-            image: state.product.attributes.image.data
-                ? state.product.attributes.image.data.attributes.url
-                : require("assets/no_image.png"),
+            image: getFileUrl(state.product.attributes.image.data),
             user: {
                 fullname: state.product.attributes.user.data.attributes.fullname,
                 email: state.product.attributes.user.data.attributes.email,
@@ -113,5 +111,5 @@ function getFileUrl(data) {
         }
         return `${process.env.STRAPI_URL}${data.attributes.url}`
     }
-    require("assets/no_profile.svg");
+    return require("assets/no_image.png");
 }
