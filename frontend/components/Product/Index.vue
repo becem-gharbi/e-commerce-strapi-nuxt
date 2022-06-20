@@ -56,20 +56,14 @@
       </NuxtLink>
     </div>
 
-    <ProductMore :modalId="`product-${product.id}-more-id`"></ProductMore>
-
-    <div
-      data-bs-toggle="modal"
-      :data-bs-target="`#product-${product.id}-more-id`"
-      @click="$store.dispatch('getProduct', product.id)"
-    >
+    <ProductMore :productId="product.id">
       <img
         :src="product.image"
         height="200px"
         style="object-fit: contain"
         class="card-img-top"
       />
-    </div>
+    </ProductMore>
 
     <div class="card-body">
       <div class="d-flex align-items-center">

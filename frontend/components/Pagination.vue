@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex">
+  <div v-if="pagination.pageCount > 1" class="d-flex">
     <ul class="pagination ms-auto me-auto">
       <li class="page-item" :class="{ disabled: pagination.page === 1 }">
         <NuxtLink
@@ -69,8 +69,14 @@
 export default {
   props: {
     pagination: {
-      type: Object,
-      required: true,
+      page: {
+        type: Number,
+        required: true,
+      },
+      pageCount: {
+        type: Number,
+        required: true,
+      },
     },
   },
 };

@@ -18,15 +18,15 @@
 export default {
   props: {
     label: {
-      type: "String",
+      type: String,
       required: true,
     },
     type: {
-      type: "String",
+      type: String,
       required: true,
     },
     class: {
-      type: "String",
+      type: String,
       required: true,
     },
   },
