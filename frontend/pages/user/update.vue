@@ -26,15 +26,13 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item label="Theme">
-          <a-space align="center">
-            Dark
-            <a-switch v-model="themeDark" size="small"> </a-switch>
-          </a-space>
-        </a-form-item>
-
         <a-form-item>
-          <a-button type="primary" html-type="submit" block>Submit</a-button>
+          <ButtonAsync
+            label="Save Changes"
+            htmlType="submit"
+            icon="save"
+            block
+          />
         </a-form-item>
       </a-form>
     </a-col>
@@ -48,35 +46,43 @@ export default {
       fullname: this.$auth.user.fullname,
       location: { ...this.$auth.user.location },
       facebookLink: this.$auth.user.link,
-      themeDark: this.$auth.user.themeDark,
       image: this.$auth.user.image
         ? process.env.NODE_ENV === "production"
           ? this.$auth.user.image.url
           : `${process.env.STRAPI_URL}${this.$auth.user.image.url}`
-        : null,
+        : require("@/assets/no_profile.png"),
     };
   },
 
   methods: {
     async handleSubmit() {
-      const formData = new FormData();
+      try {
+        const formData = new FormData();
 
-      const data = {
-        fullname: this.fullname,
-        location: this.location,
-        facebookLink: this.facebookLink,
-        themeDark: this.themeDark,
-      };
+        const data = {
+          fullname: this.fullname,
+          location: this.location,
+          facebookLink: this.facebookLink,
+        };
 
-      formData.append("data", JSON.stringify(data));
+        formData.append("data", JSON.stringify(data));
 
-      formData.append("files.image", this.image);
+        formData.append("files.image", this.image);
 
-      await this.$axios.put(`/users/me`, formData);
+        await this.$axios.put(`/users/me`, formData);
 
-      this.$auth.fetchUser();
+        await this.$auth.fetchUser();
 
-      this.$router.replace(`/user/${this.$auth.user.id}`);
+        this.$router.replace(`/dashboard`);
+      } catch (err) {
+        if (err.response.data.error.details.errors) {
+          this.$message.error(
+            err.response.data.error.details.errors[0].message
+          );
+        } else {
+          this.$message.error(err.response.data.error.message);
+        }
+      }
     },
   },
 };

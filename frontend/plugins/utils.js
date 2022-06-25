@@ -7,7 +7,7 @@ export default ({ app }, inject) => {
             }
             return `${process.env.STRAPI_URL}${data.attributes.url}`;
         }
-        return require("~/static/no_image.png");
+        return require("@/assets/no_image.png");
     });
 
     inject('getFilesUrl', (data) => {
@@ -19,6 +19,6 @@ export default ({ app }, inject) => {
                 return [`${process.env.STRAPI_URL}${el.attributes.url}`];
             });
         }
-        return [require("~/static/no_image.png")]
+        return [require("@/assets/no_image.png")]
     });
 }

@@ -5,11 +5,9 @@
     class="avatar-uploader"
     :show-upload-list="false"
     :before-upload="beforeUpload"
-    @change="handleChange"
   >
-    <img v-if="imageUrl" :src="imageUrl" alt="avatar" height="250px" />
+    <img v-if="imageUrl" :src="imageUrl" alt="avatar" height="200px" />
     <div v-else>
-      <a-icon :type="loading ? 'loading' : 'plus'" />
       <div class="ant-upload-text">Upload</div>
     </div>
   </a-upload>
@@ -22,46 +20,21 @@ function getBase64(img, callback) {
   reader.readAsDataURL(img);
 }
 export default {
-  props: {
-    value: {
-      type: [File, String],
-    },
-  },
+  props: ["value"],
 
   data() {
     return {
-      loading: false,
-      imageUrl: this.value,
-      sizeMbMax: 2,
+      imageUrl: this.value + `?rand=${Math.random()}`,
     };
   },
 
   methods: {
-    handleChange(info) {
-      if (info.file.status === "uploading") {
-        this.loading = true;
-        return;
-      }
-      if (info.file.status === "done") {
-        this.$emit("input", info.file.originFileObj);
-        // Get this url from response in real world.
-        getBase64(info.file.originFileObj, (imageUrl) => {
-          this.imageUrl = imageUrl;
-          this.loading = false;
-        });
-      }
-    },
     beforeUpload(file) {
-      const isJpgOrPng =
-        file.type === "image/jpeg" || file.type === "image/png";
-      if (!isJpgOrPng) {
-        this.$message.error("You can only upload JPG file!");
-      }
-      const isLt2M = file.size / 1024 / 1024 < this.sizeMbMax;
-      if (!isLt2M) {
-        this.$message.error(`Image must smaller than ${this.sizeMbMax}MB!`);
-      }
-      return isJpgOrPng && isLt2M;
+      getBase64(file, (imageUrl) => {
+        this.imageUrl = imageUrl;
+      });
+      this.$emit("input", file);
+      return false;
     },
   },
 };

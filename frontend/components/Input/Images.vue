@@ -5,6 +5,11 @@
       :file-list="fileList"
       @preview="handlePreview"
       @change="handleChange"
+      :before-upload="
+        () => {
+          return false;
+        }
+      "
     >
       <div v-if="fileList.length < 8">
         <a-icon type="plus" />
@@ -60,7 +65,6 @@ export default {
 
     handleChange({ fileList }) {
       this.fileList = fileList;
-      console.log(this.fileList);
       this.$emit(
         "input",
         this.fileList.flatMap((el) => el.originFileObj)

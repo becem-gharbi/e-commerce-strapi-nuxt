@@ -12,11 +12,6 @@
       <a-badge
         :count="`${product.price} ${product.currency}`"
         style="position: absolute; top: 6px; right: 5px"
-        :number-style="{
-          backgroundColor: '#fff',
-          color: '#000',
-          boxShadow: '0 0 0 1px #d9d9d9 inset',
-        }"
       >
       </a-badge>
 
@@ -24,7 +19,7 @@
         slot="cover"
         :src="product.image[0]"
         height="150px"
-        style="object-fit: contain"
+        style="object-fit: cover"
       />
 
       <a-card-meta
@@ -40,7 +35,14 @@
             type="edit"
             @click="$router.push(`/product/${product.id}/update`)"
           />
-          <a-icon key="delete" type="delete" @click="handleDelete()" />
+          <a-popconfirm
+            title="Are you sure delete this product?"
+            ok-text="Yes"
+            cancel-text="No"
+            @confirm="handleDelete()"
+          >
+            <a-icon key="delete" type="delete" />
+          </a-popconfirm>
         </template>
 
         <template v-else>
@@ -59,6 +61,7 @@
 
     <a-modal
       v-model="modalVisible"
+      :dialog-style="{ top: '20px' }"
       :title="product.name"
       okText="View Author"
       :footer="null"
@@ -135,16 +138,10 @@ export default {
     },
 
     async handleDelete() {
-      this.$confirm({
-        title: "Are you sure delete this product?",
-        content: "Be carefull",
-        okText: "Yes",
-        okType: "danger",
-        cancelText: "No",
-        async onOk() {
-          this.$store.dispatch("deleteProduct", this.product.id);
-        },
-      });
+      try {
+        await this.$axios.delete(`/products/${this.product.id}`);
+        this.$emit("onDelete");
+      } catch (err) {}
     },
 
     async handleViewAuthor() {

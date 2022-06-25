@@ -1,14 +1,9 @@
 <template>
-  <a-card title="Latest Products" :bordered="false">
+  <a-card title="Latest Products" :bordered="false" size="small">
     <a-space slot="extra">
-      <a-input-search
-        placeholder="input search text"
-        style="width: 200px; text-align: left"
-        @search="handleSearch"
-      />
-      <a-button @click="modalVisible = true" type="primary">Filters</a-button>
+      <a-button icon="filter" @click="modalVisible = true" type="primary">Filters</a-button>
       <NuxtLink v-if="editEnable" :to="'/product/add'"
-        ><a-button type="primary">Add Product</a-button></NuxtLink
+        ><a-button icon="plus" type="primary">Add</a-button></NuxtLink
       >
     </a-space>
 
@@ -16,14 +11,18 @@
     <div v-else>
       <a-row :gutter="[15, 15]">
         <a-col
-          :xs="24"
+          :xs="12"
           :sm="12"
           :md="8"
-          :lg="4"
+          :lg="5"
           v-for="product of products"
           :key="product.id"
         >
-          <Product :product="product" :editEnable="editEnable" />
+          <Product
+            :product="product"
+            :editEnable="editEnable"
+            @onDelete="$fetch()"
+          />
         </a-col>
       </a-row>
     </div>
@@ -78,15 +77,6 @@ export default {
 
       modalVisible: false,
     };
-  },
-
-  methods: {
-    handleSearch(searchText) {
-      this.filters.name = {
-        $containsi: searchText,
-      };
-      this.$fetch();
-    },
   },
 
   watch: {

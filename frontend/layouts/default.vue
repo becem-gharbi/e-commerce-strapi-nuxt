@@ -53,13 +53,11 @@ header {
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  position: fixed;
-  z-index: 2000;
-  background-color: #0060b9;
-  box-shadow: 0 0 1px 0px #f0f2f5;
+  background-color: white;
+  box-shadow: 0 0 1px 0px #0352c9;
 }
 .brand {
-  color: #f0f2f5;
+  color: #474747;
   font-weight: 600;
   font-size: medium;
 }
@@ -77,20 +75,20 @@ header {
   align-items: center;
   font-size: 1em;
   margin: auto 7px;
-  color: #f0f2f5;
+  color: #474747;
 }
 .flex-btn span {
   padding-left: 5px;
 }
 .nuxt-link-active {
-  border-bottom: 4px solid #f0f2f5;
+  border-bottom: 3px solid #f5222d;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 main {
-  padding: 60px 20px 10px 20px;
+  padding: 30px 10px;
 }
 @media (max-width: 570px) {
   .flex-btn {

@@ -10,9 +10,13 @@
       </a-form-item>
 
       <a-form-item>
-        <a-button type="primary" html-type="submit" style="margin: 1rem 0" block
-          >Reset Password</a-button
-        >
+        <ButtonAsync
+          label="Reset Password"
+          htmlType="submit"
+          block
+          style="margin: 1rem 0"
+        />
+        
         Doesn't want to reset password?
         <NuxtLink to="/user/login"> Login </NuxtLink>
       </a-form-item>

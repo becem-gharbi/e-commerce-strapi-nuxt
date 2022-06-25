@@ -1,17 +1,14 @@
 <template>
-  <button
+  <a-button
+    :icon="icon"
     :type="type"
-    :class="[className, { disabled: isLoading }]"
+    :html-type="htmlType"
+    :disabled="isLoading"
+    :loading="isLoading"
+    :block="block"
     @click="$emit('click')"
+    >{{ label }}</a-button
   >
-    <!-- <span
-      v-if="isLoading"
-      class="spinner-border spinner-border-sm me-2"
-      role="status"
-    ></span
-    > -->
-    {{ label }}
-  </button>
 </template>
 
 <script>
@@ -21,14 +18,21 @@ export default {
       type: String,
       required: true,
     },
+    htmlType: {
+      type: String,
+      default: "button",
+    },
     type: {
       type: String,
-      required: true,
+      default: "primary",
     },
-    className: {
+    icon: {
       type: String,
-      required: false,
-      default: "btn",
+      default: "",
+    },
+    block: {
+      type: Boolean,
+      default: false,
     },
   },
   data: function () {

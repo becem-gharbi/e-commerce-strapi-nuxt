@@ -2,16 +2,12 @@
   <a-row type="flex" justify="center">
     <a-col :xs="24" :sm="24" :md="12" :lg="8">
       <a-form layout="vertical" @submit.prevent="handleSubmit">
-        <a-form-item label="Images">
-          <InputImages v-model="image" />
-        </a-form-item>
-
         <a-form-item label="Name">
           <a-input v-model="name" />
         </a-form-item>
 
         <a-form-item label="Price">
-          <a-input v-model="price" />
+          <a-input v-model="price" type="number" />
         </a-form-item>
 
         <a-form-item label="Description">
@@ -30,8 +26,12 @@
           </a-select>
         </a-form-item>
 
+        <a-form-item label="Images">
+          <InputImages v-model="image" />
+        </a-form-item>
+
         <a-form-item>
-          <a-button type="primary" html-type="submit" block>Submit</a-button>
+          <ButtonAsync label="Create" htmlType="submit" icon="plus" block />
         </a-form-item>
       </a-form>
     </a-col>
@@ -45,32 +45,40 @@ export default {
       name: "",
       price: "",
       description: "",
-      category: 1,
+      category: this.$store.state.categories[0].id,
       image: [],
     };
   },
 
   methods: {
-    handleSubmit() {
-      const formData = new FormData();
+    async handleSubmit() {
+      try {
+        const formData = new FormData();
 
-      const data = {
-        user: this.$auth.user.id,
-        name: this.name,
-        price: this.price,
-        description: this.description,
-        category: this.category,
-        currency: this.$store.state.currency,
-      };
+        const data = {
+          user: this.$auth.user.id,
+          name: this.name,
+          price: this.price,
+          description: this.description,
+          category: this.category,
+          currency: this.$store.state.currency,
+        };
 
-      formData.append("data", JSON.stringify(data));
+        formData.append("data", JSON.stringify(data));
 
-      this.image.forEach((el) => formData.append("files.image", el));
+        this.image.forEach((el) => formData.append("files.image", el));
 
-      this.$axios
-        .post("/products", formData)
-        .then(() => this.$router.replace("/dashboard"))
-        .catch((err) => {});
+        await this.$axios.post("/products", formData);
+        this.$router.replace("/dashboard");
+      } catch (err) {
+        if (err.response.data.error.details.errors) {
+          this.$message.error(
+            err.response.data.error.details.errors[0].message
+          );
+        } else {
+          this.$message.error(err.response.data.error.message);
+        }
+      }
     },
   },
 };

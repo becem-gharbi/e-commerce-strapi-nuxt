@@ -1,38 +1,30 @@
-import countriesAndStates from "~/static/countries+states.json";
+import countries from "@/assets/countries.json";
 
 export const state = () => ({
-    states: [],
     country: '',
+    states: [],
+    currency: 'undefined',
     categories: [],
-    currency: 'undefined'
 })
 
 export const actions = {
 
     async init({ commit }) {
-        console.log('Init Store');
 
         let res = await this.$axios.get("/categories");
         const categories = res.data.data;
+
         commit('SET_CATEGORIES', categories);
 
-        res = await this.$axios.get('https://get.geojs.io/v1/ip/country.json');
-        const country = res.data.name;
-        commit('SET_COUNTRY', country);
-
-        for (let el of countriesAndStates) {
-            if (el.name === country) {
-                commit('SET_STATES', el.states.flatMap(el => el.name));
-                break;
-            }
-        }
-
-        for (let el of countriesAndStates) {
-            if (el.name === country) {
+        for (let el of countries) {
+            if (el.iso2 === process.env.COUNTRY_ISO2) {
+                commit('SET_COUNTRY', el.name);
+                commit('SET_STATES', el.states);
                 commit('SET_CURRENCY', el.currency);
                 break;
             }
         }
+
     },
 }
 

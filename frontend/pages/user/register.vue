@@ -14,16 +14,28 @@
       </a-form-item>
 
       <a-form-item>
-        <a-checkbox v-model="readTerms">Read terms and conditions</a-checkbox>
-        <a-button type="primary" html-type="submit" style="margin: 1rem 0" block
-          >Register</a-button
+        <a-checkbox v-model="termsAccepted"
+          >Accept
+          <NuxtLink to="/policy" target="_blank">
+            terms and conditions</NuxtLink
+          ></a-checkbox
         >
+
+        <ButtonAsync
+          label="Register"
+          htmlType="submit"
+          block
+          style="margin: 1rem 0"
+        />
+
         Already have account?
         <NuxtLink to="/user/login"> Login </NuxtLink>
       </a-form-item>
       <a-divider>Or</a-divider>
-      <a-button html-type="button" type="danger" block
-        >Login with Google</a-button
+      <a :href="googleLoginUrl" target="_blank"
+        ><a-button html-type="button" type="danger" block
+          >Login with Google</a-button
+        ></a
       >
     </a-form>
   </a-card>
@@ -35,14 +47,19 @@ export default {
   layout: "auth",
   data: function () {
     return {
+      googleLoginUrl: `${process.env.STRAPI_URL}/api/connect/google`,
       email: "",
       password: "",
       passwordConfirmation: "",
-      readTerms: false,
+      termsAccepted: false,
     };
   },
   methods: {
     async handleSubmit() {
+      if (!this.termsAccepted) {
+        this.$message.error("Please accept terms & conditions to continue");
+        return;
+      }
       if (this.passwordConfirmation !== this.password) {
         this.$message.error("Passwords do not match");
         return;

@@ -2,16 +2,12 @@
   <a-row type="flex" justify="center">
     <a-col :xs="24" :sm="24" :md="12" :lg="8">
       <a-form layout="vertical" @submit.prevent="handleSubmit">
-        <a-form-item label="Image">
-          <InputImages v-model="image" />
-        </a-form-item>
-
         <a-form-item label="Name">
           <a-input v-model="name" />
         </a-form-item>
 
         <a-form-item label="Price">
-          <a-input v-model="price" />
+          <a-input v-model="price" type="number" />
         </a-form-item>
 
         <a-form-item label="Description">
@@ -30,8 +26,17 @@
           </a-select>
         </a-form-item>
 
+        <a-form-item label="Image">
+          <InputImages v-model="image" />
+        </a-form-item>
+
         <a-form-item>
-          <a-button type="primary" html-type="submit" block>Submit</a-button>
+          <ButtonAsync
+            label="Save Changes"
+            htmlType="submit"
+            icon="save"
+            block
+          />
         </a-form-item>
       </a-form>
     </a-col>
@@ -62,24 +67,32 @@ export default {
   },
 
   methods: {
-    handleSubmit() {
-      const formData = new FormData();
+    async handleSubmit() {
+      try {
+        const formData = new FormData();
 
-      const data = {
-        name: this.name,
-        price: this.price,
-        description: this.description,
-        category: this.category,
-      };
+        const data = {
+          name: this.name,
+          price: this.price,
+          description: this.description,
+          category: this.category,
+        };
 
-      formData.append("data", JSON.stringify(data));
+        formData.append("data", JSON.stringify(data));
 
-      this.image.forEach((el) => formData.append("files.image", el));
+        this.image.forEach((el) => formData.append("files.image", el));
 
-      this.$axios
-        .put(`/products/${this.$route.params.id}`, formData)
-        .then(() => this.$router.replace("/dashboard"))
-        .catch((err) => {});
+        await this.$axios.put(`/products/${this.$route.params.id}`, formData);
+        this.$router.replace("/dashboard");
+      } catch (err) {
+        if (err.response.data.error.details.errors) {
+          this.$message.error(
+            err.response.data.error.details.errors[0].message
+          );
+        } else {
+          this.$message.error(err.response.data.error.message);
+        }
+      }
     },
   },
 };

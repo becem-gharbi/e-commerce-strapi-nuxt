@@ -5,7 +5,7 @@
       alt="example"
       :src="image"
       height="200px"
-      style="object-fit: cover"
+      style="object-fit: contain"
     />
     <template slot="actions" class="ant-card-actions">
       <a :href="facebookLink" target="_blank"
@@ -25,7 +25,7 @@
 import qs from "qs";
 export default {
   props: {
-    user: Number,
+    user: [Number, String],
   },
 
   data() {
@@ -53,7 +53,7 @@ export default {
       ? process.env.NODE_ENV === "production"
         ? res.data.image.url
         : `${process.env.STRAPI_URL}${res.data.image.url}`
-      : null;
+      : require("@/assets/no_profile.png");
   },
 };
 </script>

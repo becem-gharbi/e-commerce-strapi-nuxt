@@ -14,15 +14,24 @@
         <NuxtLink style="float: right" to="/user/forgot-password">
           Forgot password?
         </NuxtLink>
-        <a-button type="primary" html-type="submit" style="margin: 1rem 0" block
-          >Login</a-button
-        >
+
+        <ButtonAsync
+          label="Login"
+          htmlType="submit"
+          block
+          style="margin: 1rem 0"
+        />
+
         Don't have account?
         <NuxtLink to="/user/register"> Register </NuxtLink>
       </a-form-item>
+
       <a-divider>Or</a-divider>
-      <a-button html-type="button" type="danger" block
-        >Login with Google</a-button
+
+      <a :href="googleLoginUrl" target="_blank"
+        ><a-button html-type="button" type="danger" block
+          >Login with Google</a-button
+        ></a
       >
     </a-form>
   </a-card>
