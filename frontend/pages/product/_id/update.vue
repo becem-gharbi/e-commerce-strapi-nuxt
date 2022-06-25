@@ -1,105 +1,86 @@
 <template>
-  <div class="page">
-    <form @submit.prevent="handleSubmit">
-      <div class="page-header">
-        <div class="row align-items-center">
-          <div class="col">
-            <h2 class="page-title">Add Product</h2>
-          </div>
-          <div class="col-auto ms-auto">
-            <ButtonAsync
-              label="Save Changes"
-              type="submit"
-              class="btn btn-primary"
-            ></ButtonAsync>
-          </div>
-        </div>
-      </div>
-      <div class="page-body">
-        <div class="row g-4 justify-content-center">
-          <div class="col-lg-4">
-            <InputBase
-              label="Name"
-              name="name"
-              :value="product.name"
-              :required="true"
-              :errors="errors"
-            ></InputBase>
-            <InputBase
-              label="Price"
-              name="price"
-              type="number"
-              :value="product.price"
-              :required="true"
-              :errors="errors"
-            ></InputBase>
-            <InputCategory
-              :value="product.category"
-              :required="true"
-            ></InputCategory>
-            <InputAutosize
-              label="Description"
-              name="description"
-              :value="product.description"
-              :required="true"
-              :errors="errors"
-            ></InputAutosize>
-          </div>
-          <div class="col-lg-4">
-            <label class="form-label">Image</label>
-            <InputImage name="image" :value="product.image"></InputImage>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+  <a-row type="flex" justify="center">
+    <a-col :xs="24" :sm="24" :md="12" :lg="8">
+      <a-form layout="vertical" @submit.prevent="handleSubmit">
+        <a-form-item label="Image">
+          <InputImages v-model="image" />
+        </a-form-item>
+
+        <a-form-item label="Name">
+          <a-input v-model="name" />
+        </a-form-item>
+
+        <a-form-item label="Price">
+          <a-input v-model="price" />
+        </a-form-item>
+
+        <a-form-item label="Description">
+          <a-textarea v-model="description" auto-size />
+        </a-form-item>
+
+        <a-form-item label="Category">
+          <a-select v-model="category">
+            <a-select-option
+              v-for="category of $store.state.categories"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.attributes.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item>
+          <a-button type="primary" html-type="submit" block>Submit</a-button>
+        </a-form-item>
+      </a-form>
+    </a-col>
+  </a-row>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import qs from "qs";
+
 export default {
-  data: function () {
+  async asyncData({ $axios, route, $getFilesUrl }) {
+    const query = qs.stringify({
+      populate: {
+        image: "*",
+        category: "*",
+      },
+    });
+
+    const res = await $axios.get(`/products/${route.params.id}?` + query);
+
     return {
-      errors: [],
+      name: res.data.data.attributes.name,
+      price: res.data.data.attributes.price,
+      description: res.data.data.attributes.description,
+      category: res.data.data.attributes.category.data.id,
+      image: $getFilesUrl(res.data.data.attributes.image.data),
     };
   },
 
-  computed: {
-    ...mapGetters(["product"]),
-  },
-
-  async asyncData({ store, route }) {
-    await store.dispatch("getProduct", route.params.id);
-  },
-
   methods: {
-    async handleSubmit(event) {
-      const data = {};
+    handleSubmit() {
       const formData = new FormData();
 
-      for (let el of event.target.elements) {
-        if (!["submit", "file", "button"].includes(el.type)) {
-          data[el.name] = el.value;
-        } else if (el.type === "file") {
-          for (let file of el.files) {
-            formData.append(`files.${el.name}`, file);
-          }
-        }
-      }
+      const data = {
+        name: this.name,
+        price: this.price,
+        description: this.description,
+        category: this.category,
+      };
 
       formData.append("data", JSON.stringify(data));
 
-      await this.$axios
-        .put(`/products/${this.product.id}`, formData)
-        .then(() => this.$router.replace("/product"))
-        .catch((err) => {
-          this.errors = Array.from(err.response.data.error.details.errors);
-          this.errors.forEach((error) => {
-            this.errors[error.path] = error.message;
-          });
-        });
+      this.image.forEach((el) => formData.append("files.image", el));
+
+      this.$axios
+        .put(`/products/${this.$route.params.id}`, formData)
+        .then(() => this.$router.replace("/dashboard"))
+        .catch((err) => {});
     },
   },
 };
 </script>
-

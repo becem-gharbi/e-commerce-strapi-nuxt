@@ -1,115 +1,44 @@
-import qs from "qs";
+import countriesAndStates from "~/static/countries+states.json";
 
 export const state = () => ({
-    products: {},
-    product: {},
+    states: [],
+    country: '',
+    categories: [],
+    currency: 'undefined'
 })
-
-export const getters = {
-
-    product(state) {
-        if (!state.product.id) return {};
-        return {
-            id: state.product.id,
-            name: state.product.attributes.name,
-            description: state.product.attributes.description,
-            price: state.product.attributes.price,
-            image: getFileUrl(state.product.attributes.image.data),
-            user: {
-                fullname: state.product.attributes.user.data.attributes.fullname,
-                email: state.product.attributes.user.data.attributes.email,
-                facebookLink: state.product.attributes.user.data.attributes.facebookLink,
-                state: state.product.attributes.user.data.attributes.location.state,
-                image: getFileUrl(state.product.attributes.user.data.attributes.image.data)
-            },
-            category: {
-                id: state.product.attributes.category.data.id,
-                name: state.product.attributes.category.data.attributes.name
-            }
-        }
-    },
-
-    products(state) {
-        if (!state.products.data) return {};
-        let data = [];
-        state.products.data.forEach(product => {
-            data.push({
-                id: product.id,
-                name: product.attributes.name,
-                price: product.attributes.price,
-                image: getFileUrl(product.attributes.image.data),
-                createdAt: product.attributes.createdAt,
-            })
-        });
-        return {
-            data, pagination: {
-                page: state.products.meta.pagination.page,
-                pageCount: state.products.meta.pagination.pageCount
-            }
-        };
-    }
-}
 
 export const actions = {
 
-    async getProducts({ commit }, params = {}) {
-        const query = qs.stringify({
-            ...params,
-            populate: {
-                image: "*",
-            },
-            sort: ["updatedAt:desc"],
-        });
+    async init({ commit }) {
+        console.log('Init Store');
 
-        const res = await this.$axios.get("/products?" + query);
-        commit('SET_PRODUCTS', res.data);
-    },
+        let res = await this.$axios.get("/categories");
+        const categories = res.data.data;
+        commit('SET_CATEGORIES', categories);
 
-    async getProduct({ commit }, productId) {
-        const query = qs.stringify({
-            populate: {
-                image: "*",
-                category: "*",
-                user: {
-                    populate: ["image", "location"],
-                },
-            },
-            sort: ["updatedAt:desc"],
-        });
+        res = await this.$axios.get('https://get.geojs.io/v1/ip/country.json');
+        const country = res.data.name;
+        commit('SET_COUNTRY', country);
 
-        const res = await this.$axios.get(`/products/${productId}?` + query);
-        commit('SET_PRODUCT', res.data.data);
-    },
+        for (let el of countriesAndStates) {
+            if (el.name === country) {
+                commit('SET_STATES', el.states.flatMap(el => el.name));
+                break;
+            }
+        }
 
-    async deleteProduct({ commit }, productId) {
-        this.$swal
-            .fire({
-                title: "<p class='h2'>Delete product</p>",
-                showCancelButton: true,
-            })
-            .then(async (result) => {
-                if (result.isConfirmed) {
-                    await this.$axios.delete(`/products/${productId}`);
-                    await commit('DELETE_PRODUCT', productId)
-                }
-            });
+        for (let el of countriesAndStates) {
+            if (el.name === country) {
+                commit('SET_CURRENCY', el.currency);
+                break;
+            }
+        }
     },
 }
 
 export const mutations = {
-    SET_PRODUCTS(state, products) { state.products = products },
-    SET_PRODUCT(state, product) { state.product = product },
-    DELETE_PRODUCT(state, productId) {
-        state.products.data = state.products.data.filter((product) => product.id !== productId);
-    },
-}
-
-function getFileUrl(data) {
-    if (data) {
-        if (process.env.NODE_ENV === 'production') {
-            return data.attributes.url;
-        }
-        return `${process.env.STRAPI_URL}${data.attributes.url}`
-    }
-    return require("assets/no_image.png");
+    SET_COUNTRY(state, country) { state.country = country },
+    SET_STATES(state, states) { state.states = states },
+    SET_CURRENCY(state, currency) { state.currency = currency },
+    SET_CATEGORIES(state, categories) { state.categories = categories },
 }

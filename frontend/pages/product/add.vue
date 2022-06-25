@@ -1,88 +1,76 @@
 <template>
-  <div class="page">
-    <form @submit.prevent="handleSubmit">
-      <div class="page-header">
-        <div class="row align-items-center">
-          <div class="col">
-            <h2 class="page-title">Add Product</h2>
-          </div>
-          <div class="col-auto ms-auto">
-            <ButtonAsync
-              label="Add"
-              type="submit"
-              class="btn btn-primary"
-            ></ButtonAsync>
-          </div>
-        </div>
-      </div>
-      <div class="page-body">
-        <div class="row g-4 justify-content-center">
-          <div class="col-lg-4">
-            <InputBase
-              label="Name"
-              name="name"
-              :required="true"
-              :errors="errors"
-            ></InputBase>
-            <InputBase
-              label="Price"
-              name="price"
-              type="number"
-              :required="true"
-              :errors="errors"
-            ></InputBase>
-            <InputCategory :required="true"></InputCategory>
-            <InputAutosize
-              label="Description"
-              name="description"
-              :required="true"
-              :errors="errors"
-            ></InputAutosize>
-          </div>
-          <div class="col-lg-4">
-            <label class="form-label">Image</label>
-            <InputImage name="image" :required="false"></InputImage>
-          </div>
-        </div>
-      </div>
-    </form>
-  </div>
+  <a-row type="flex" justify="center">
+    <a-col :xs="24" :sm="24" :md="12" :lg="8">
+      <a-form layout="vertical" @submit.prevent="handleSubmit">
+        <a-form-item label="Images">
+          <InputImages v-model="image" />
+        </a-form-item>
+
+        <a-form-item label="Name">
+          <a-input v-model="name" />
+        </a-form-item>
+
+        <a-form-item label="Price">
+          <a-input v-model="price" />
+        </a-form-item>
+
+        <a-form-item label="Description">
+          <a-textarea v-model="description" auto-size />
+        </a-form-item>
+
+        <a-form-item label="Category">
+          <a-select v-model="category">
+            <a-select-option
+              v-for="category of $store.state.categories"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.attributes.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-item>
+
+        <a-form-item>
+          <a-button type="primary" html-type="submit" block>Submit</a-button>
+        </a-form-item>
+      </a-form>
+    </a-col>
+  </a-row>
 </template>
 
 <script>
 export default {
   data: function () {
     return {
-      errors: [],
+      name: "",
+      price: "",
+      description: "",
+      category: 1,
+      image: [],
     };
   },
 
   methods: {
-    handleSubmit(event) {
-
-      const data = {};
+    handleSubmit() {
       const formData = new FormData();
 
-      for (let el of event.target.elements) {
-        if (!["submit", "file"].includes(el.type)) {
-          data[el.name] = el.value;
-        } else if (el.type === "file") {
-          for (let file of el.files) {
-            formData.append(`files.${el.name}`, file, file.name);
-          }
-        }
-      }
-
-      data["user"] = this.$auth.user.id;
+      const data = {
+        user: this.$auth.user.id,
+        name: this.name,
+        price: this.price,
+        description: this.description,
+        category: this.category,
+        currency: this.$store.state.currency,
+      };
 
       formData.append("data", JSON.stringify(data));
 
+      this.image.forEach((el) => formData.append("files.image", el));
+
       this.$axios
         .post("/products", formData)
-        .then(() => this.$router.replace("/product"))
-        .catch((err) => {
-          this.errors = Array.from(err.response.data.error.details.errors);
-        });
+        .then(() => this.$router.replace("/dashboard"))
+        .catch((err) => {});
     },
   },
 };

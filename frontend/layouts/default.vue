@@ -1,19 +1,107 @@
 <template>
   <div>
-    <div
-      class="page theme-light"
-      :class="{ 'theme-dark': $auth.user.themeDark }"
-    >
-      <Navigation></Navigation>
-      <div class="page-wrapper">
-        <div class="container-fluid my-3">
-          <Nuxt></Nuxt>
+    <header>
+      <div class="brand">BRAND</div>
+      <div class="navigation">
+        <nuxt-link
+          v-for="path in paths"
+          :key="path.name"
+          :to="path.route"
+          active-class="nuxt-link-active"
+          exact
+        >
+          <div class="flex-btn">
+            <a-icon :type="path.icon" />
+            <span>{{ path.name }}</span>
+          </div>
+        </nuxt-link>
+        <div class="flex-btn">
+          <a-icon type="logout" />
+          <span @click="handleLogout" style="cursor: pointer">Logout</span>
         </div>
       </div>
-    </div>
+    </header>
+    <main><nuxt /></main>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data: function () {
+    return {
+      paths: [
+        { name: "Home", route: "/", icon: "home" },
+        { name: "Dashboard", route: "/dashboard", icon: "appstore" },
+        { name: "Account", route: "/user/update", icon: "user" },
+      ],
+    };
+  },
+
+  methods: {
+    handleLogout() {
+      this.$auth.logout();
+      this.$router.replace("/user/login");
+    },
+  },
+};
 </script>
+
+<style scoped>
+header {
+  padding: 0 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  z-index: 2000;
+  background-color: #0060b9;
+  box-shadow: 0 0 1px 0px #f0f2f5;
+}
+.brand {
+  color: #f0f2f5;
+  font-weight: 600;
+  font-size: medium;
+}
+.navigation {
+  display: flex;
+  height: 50px;
+  flex-direction: row;
+  align-items: center;
+  gap: 5px;
+}
+.flex-btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-size: 1em;
+  margin: auto 7px;
+  color: #f0f2f5;
+}
+.flex-btn span {
+  padding-left: 5px;
+}
+.nuxt-link-active {
+  border-bottom: 4px solid #f0f2f5;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+main {
+  padding: 60px 20px 10px 20px;
+}
+@media (max-width: 570px) {
+  .flex-btn {
+    flex-direction: column;
+  }
+  .brand {
+    display: none;
+  }
+  .navigation {
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+</style>

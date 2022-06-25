@@ -1,62 +1,51 @@
 <template>
-  <div class="container-tight">
-    <form class="card card-md" @submit.prevent="handleSubmit">
-      <div class="card-body">
-        <h2 class="card-title text-center mb-4">Password Forgotten ?</h2>
-        <p class="text-muted text-center mb-4">
-          Enter your email address and a reset password mail will be sent to you
-        </p>
-        <InputBase
-          label="Email address"
-          name="email"
-          type="email"
-          :required="true"
-        ></InputBase>
-        <div class="form-footer">
-          <ButtonAsync
-            label="Reset Password"
-            type="submit"
-            class="btn btn-primary w-100"
-          ></ButtonAsync>
-        </div>
-      </div>
-    </form>
-    <div class="text-center text-muted mt-3">
-      Forget it, <NuxtLink to="/">send me back</NuxtLink> to the sign in screen.
-    </div>
-  </div>
+  <a-card hoverable>
+    <a-form layout="vertical" autocomplete="off" @submit.prevent="handleSubmit">
+      <a-form-item label="Email">
+        <a-input v-model="email" type="email" />
+      </a-form-item>
+
+      <a-form-item>
+        <a-button type="primary" html-type="submit" style="margin: 1rem 0" block
+          >Reset Password</a-button
+        >
+        Password remembered?
+        <NuxtLink to="/user/login"> Login </NuxtLink>
+      </a-form-item>
+    </a-form>
+  </a-card>
 </template>
 
 <script>
 export default {
   auth: false,
   layout: "auth",
+  data() {
+    return {
+      email: "",
+    };
+  },
   methods: {
-    async handleSubmit(event) {
+    async handleSubmit() {
       try {
         await this.$axios({
           url: "auth/forgot-password",
           method: "post",
           data: {
-            email: event.target.email.value,
+            email: this.email,
           },
         });
-        this.$swal.fire({
-          padding: "0.2rem",
-          title:
-            "<p class='h3'>" +
-            "Reset password sent, please check Inbox" +
-            "</p>",
-          toast: true,
-          position: "top",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: false,
-          icon: "success",
-          width: "20rem",
-        });
-        this.$router.replace("/");
-      } catch (e) {}
+        this.$router.replace("/user/login");
+        this.$message.success("Reset password mail sent, Please check inbox");
+      } catch (err) {
+        if (err.response.data.error.details.errors) {
+          this.$message.error(
+            err.response.data.error.details.errors[0].message
+          );
+        } else {
+          this.$message.error(err.response.data.error.message);
+        }
+      }
     },
   },
 };

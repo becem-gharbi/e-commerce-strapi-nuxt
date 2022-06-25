@@ -1,99 +1,84 @@
 <template>
-  <div
-    style="position: relative"
-    class="card"
-    :class="{ 'is-invalid': isInvalid }"
+  <a-upload
+    name="avatar"
+    list-type="picture-card"
+    class="avatar-uploader"
+    :show-upload-list="false"
+    :before-upload="beforeUpload"
+    @change="handleChange"
   >
-    <img :src="image" alt="" height="300px" style="object-fit: contain" />
-
-    <input
-      :name="name"
-      :required="required"
-      @change="handleFileUpload"
-      ref="inputFile"
-      type="file"
-      class="form-control"
-      placeholder="Input placeholder"
-      hidden
-    />
-
-    <button
-      style="position: absolute; right: 0.8rem; bottom: 0.8rem"
-      class="btn btn-icon"
-      type="button"
-      @click="onUploadClicked"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="icon icon-tabler icon-tabler-upload"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        stroke-width="1.25"
-        stroke="currentColor"
-        fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <desc>
-          Download more icon variants from https://tabler-icons.io/i/upload
-        </desc>
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-        <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2"></path>
-        <polyline points="7 9 12 4 17 9"></polyline>
-        <line x1="12" y1="4" x2="12" y2="16"></line>
-      </svg>
-    </button>
-  </div>
+    <img v-if="imageUrl" :src="imageUrl" alt="avatar" height="250px" />
+    <div v-else>
+      <a-icon :type="loading ? 'loading' : 'plus'" />
+      <div class="ant-upload-text">Upload</div>
+    </div>
+  </a-upload>
 </template>
 
 <script>
+function getBase64(img, callback) {
+  const reader = new FileReader();
+  reader.addEventListener("load", () => callback(reader.result));
+  reader.readAsDataURL(img);
+}
 export default {
   props: {
-    name: {
-      type: String,
-      required: true,
-    },
     value: {
-      type: String,
-      required: false,
-      default: require("~/assets/no_image.png"),
-    },
-    required: {
-      type: Boolean,
-      default: false,
+      type: [File, String],
     },
   },
-  data: function () {
+
+  data() {
     return {
-      image: this.value
-        ? this.value + `?rand=${Math.random()}`
-        : require("~/assets/no_image.png"),
-      isInvalid: false,
+      loading: false,
+      imageUrl: this.value,
+      sizeMbMax: 2,
     };
   },
-  mounted() {
-    this.$refs.inputFile.addEventListener("invalid", (_) => {
-      this.isInvalid = true;
-    });
-  },
+
   methods: {
-    onUploadClicked() {
-      this.$refs.inputFile.click();
-    },
-    handleFileUpload(event) {
-      this.isInvalid = false;
-      if (event.target.files.length > 0) {
-        const imageFile = event.target.files[0];
-        this.image = URL.createObjectURL(imageFile);
+    handleChange(info) {
+      if (info.file.status === "uploading") {
+        this.loading = true;
+        return;
       }
+      if (info.file.status === "done") {
+        this.$emit("input", info.file.originFileObj);
+        // Get this url from response in real world.
+        getBase64(info.file.originFileObj, (imageUrl) => {
+          this.imageUrl = imageUrl;
+          this.loading = false;
+        });
+      }
+    },
+    beforeUpload(file) {
+      const isJpgOrPng =
+        file.type === "image/jpeg" || file.type === "image/png";
+      if (!isJpgOrPng) {
+        this.$message.error("You can only upload JPG file!");
+      }
+      const isLt2M = file.size / 1024 / 1024 < this.sizeMbMax;
+      if (!isLt2M) {
+        this.$message.error(`Image must smaller than ${this.sizeMbMax}MB!`);
+      }
+      return isJpgOrPng && isLt2M;
     },
   },
 };
 </script>
 
-<style scoped>
-.is-invalid {
-  box-shadow: 0 0 3px 1px red;
+<style>
+.avatar-uploader > .ant-upload {
+  width: 100%;
+  height: auto;
+}
+.ant-upload-select-picture-card i {
+  font-size: 32px;
+  color: #999;
+}
+
+.ant-upload-select-picture-card .ant-upload-text {
+  margin-top: 8px;
+  color: #666;
 }
 </style>

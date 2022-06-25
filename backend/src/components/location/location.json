@@ -11,9 +11,6 @@
     },
     "state": {
       "type": "string"
-    },
-    "currency": {
-      "type": "string"
     }
   }
 }

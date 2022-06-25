@@ -28,7 +28,7 @@ export default {
       const { jwt } = res;
 
       await this.$auth.setUserToken(jwt);
-      this.$router.replace("/home");
+      this.$router.replace("/");
     } catch (err) {
       this.$router.replace("/");
     }

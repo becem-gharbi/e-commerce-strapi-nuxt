@@ -1,139 +1,167 @@
 <template>
-  <div
-    class="card card-link rounded-2"
-    style="position: relative; cursor: pointer"
-  >
-    <div v-if="!enableEdit" style="position: absolute; left: 10px; top: 10px">
-      <ProductFavourite :product="product"></ProductFavourite>
-    </div>
-
-    <div
-      class="btn-group"
-      v-if="enableEdit"
-      style="position: absolute; right: 5px; top: 5px; z-index: 10"
-    >
-      <button class="btn btn-icon" @click="handleDelete()">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-x"
-          width="40"
-          height="40"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <desc>
-            Download more icon variants from https://tabler-icons.io/i/x
-          </desc>
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-      <NuxtLink class="btn btn-icon" :to="`/product/${product.id}/update`">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-pencil"
-          width="40"
-          height="40"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <desc>
-            Download more icon variants from https://tabler-icons.io/i/pencil
-          </desc>
-          <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-          <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path>
-          <line x1="13.5" y1="6.5" x2="17.5" y2="10.5"></line>
-        </svg>
-      </NuxtLink>
-    </div>
-
-    <ProductMore :productId="product.id">
-      <img
-        :src="product.image"
-        height="200px"
-        style="object-fit: contain"
-        class="card-img-top"
+  <div>
+    <a-card hoverable size="small">
+      <a-rate
+        v-if="$auth.loggedIn"
+        :count="1"
+        style="position: absolute; top: 0; left: 5px"
+        :value="isFavourite"
+        disabled
       />
-    </ProductMore>
 
-    <div class="card-body">
-      <div class="d-flex align-items-center">
-        <div>
-          <div>{{ product.name }}</div>
-          <div class="text-muted">
-            {{ $dayjs().to($dayjs(product.createdAt)) }}
-          </div>
-        </div>
-        <div class="ms-auto">
-          <div class="badge bg-green">
-            <span>
-              <!-- Download SVG icon from http://tabler-icons.io/i/eye -->
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-coin"
-                width="40"
-                height="40"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <desc>
-                  Download more icon variants from
-                  https://tabler-icons.io/i/coin
-                </desc>
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <circle cx="12" cy="12" r="9"></circle>
-                <path
-                  d="M14.8 9a2 2 0 0 0 -1.8 -1h-2a2 2 0 0 0 0 4h2a2 2 0 0 1 0 4h-2a2 2 0 0 1 -1.8 -1"
-                ></path>
-                <path d="M12 6v2m0 8v2"></path>
-              </svg>
-              {{ product.price + " " + currency }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </div>
+      <a-badge
+        :count="`${product.price} ${product.currency}`"
+        style="position: absolute; top: 6px; right: 5px"
+        :number-style="{
+          backgroundColor: '#fff',
+          color: '#000',
+          boxShadow: '0 0 0 1px #d9d9d9 inset',
+        }"
+      >
+      </a-badge>
+
+      <img
+        slot="cover"
+        :src="product.image[0]"
+        height="150px"
+        style="object-fit: contain"
+      />
+
+      <a-card-meta
+        :title="product.name"
+        :description="$dayjs().to($dayjs(product.createdAt))"
+      >
+      </a-card-meta>
+
+      <template slot="actions" class="ant-card-actions">
+        <template v-if="editEnable">
+          <a-icon
+            key="edit"
+            type="edit"
+            @click="$router.push(`/product/${product.id}/update`)"
+          />
+          <a-icon key="delete" type="delete" @click="handleDelete()" />
+        </template>
+
+        <template v-else>
+          <a-icon
+            v-if="$auth.loggedIn"
+            key="add"
+            type="plus"
+            @click="toggleFavourite"
+          />
+          <a-icon key="user" type="user" @click="handleViewAuthor" />
+        </template>
+
+        <a-icon key="more" type="more" @click="modalVisible = true"></a-icon>
+      </template>
+    </a-card>
+
+    <a-modal
+      v-model="modalVisible"
+      :title="product.name"
+      okText="View Author"
+      :footer="null"
+    >
+      <Carousel :images="product.image" />
+
+      <br />
+      <h4>Description</h4>
+      <p>{{ product.description }}</p>
+    </a-modal>
   </div>
 </template>
 
 <script>
+import Carousel from "../Carousel.vue";
+import qs from "qs";
 export default {
+  components: { Carousel },
+
+  name: "Product",
+
   props: {
     product: {
       type: Object,
       required: true,
     },
-    enableEdit: {
+    editEnable: {
       type: Boolean,
       default: false,
     },
   },
 
-  data: function () {
+  computed: {
+    isFavourite() {
+      return (
+        this.$auth.user.favouriteProducts?.some(
+          (el) => el.id === this.product.id
+        ) * 1
+      );
+    },
+  },
+
+  data() {
     return {
-      currency: this.$auth.user.location
-        ? this.$auth.user.location.currency
-        : null,
+      modalVisible: false,
     };
   },
 
   methods: {
+    async toggleFavourite() {
+      const formData = new FormData();
+      let data = [];
+
+      if (this.isFavourite) {
+        for (let el of this.$auth.user.favouriteProducts) {
+          if (el.id !== this.product.id) {
+            data.push(el.id);
+          }
+        }
+      } else {
+        for (let el of this.$auth.user.favouriteProducts) {
+          data.push(el.id);
+        }
+        data.push(this.product.id);
+      }
+
+      formData.append("data", JSON.stringify({ favouriteProducts: data }));
+
+      await this.$axios.put(`/users/me`, formData);
+
+      await this.$auth.fetchUser();
+
+      this.modalVisible = false;
+    },
+
     async handleDelete() {
-      this.$store.dispatch("deleteProduct", this.product.id);
+      this.$confirm({
+        title: "Are you sure delete this product?",
+        content: "Be carefull",
+        okText: "Yes",
+        okType: "danger",
+        cancelText: "No",
+        async onOk() {
+          this.$store.dispatch("deleteProduct", this.product.id);
+        },
+      });
+    },
+
+    async handleViewAuthor() {
+      const query = qs.stringify({
+        filters: {
+          products: {
+            id: this.product.id,
+          },
+        },
+      });
+      const res = await this.$axios.get("/users?" + query);
+
+      const userId = res.data[0].id;
+
+      this.$router.push("user/" + userId);
     },
   },
 };
 </script>
+

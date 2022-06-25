@@ -1,7 +1,7 @@
 <template>
   <button
     :type="type"
-    :class="{ disabled: isLoading, class: true }"
+    :class="[className, { disabled: isLoading }]"
     @click="$emit('click')"
   >
     <!-- <span
@@ -25,9 +25,10 @@ export default {
       type: String,
       required: true,
     },
-    class: {
+    className: {
       type: String,
-      required: true,
+      required: false,
+      default: "btn",
     },
   },
   data: function () {

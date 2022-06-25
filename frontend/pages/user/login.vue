@@ -2,24 +2,23 @@
   <a-card hoverable>
     <a-form layout="vertical" autocomplete="off" @submit.prevent="handleSubmit">
       <a-form-item label="Email">
-        <a-input v-model="email" type="email" />
+        <a-input v-model="identifier" type="email" />
       </a-form-item>
 
       <a-form-item label="Password">
         <a-input-password v-model="password" />
       </a-form-item>
 
-      <a-form-item label="Password Confirmation">
-        <a-input-password v-model="passwordConfirmation" />
-      </a-form-item>
-
       <a-form-item>
-        <a-checkbox v-model="readTerms">Read terms and conditions</a-checkbox>
+        <a-checkbox v-model="remember">Remember me</a-checkbox>
+        <NuxtLink style="float: right" to="/user/forgot-password">
+          Forgot password?
+        </NuxtLink>
         <a-button type="primary" html-type="submit" style="margin: 1rem 0" block
-          >Register</a-button
+          >Login</a-button
         >
-        Already have account?
-        <NuxtLink to="/user/login"> Login </NuxtLink>
+        Don't have account?
+        <NuxtLink to="/user/register"> Register </NuxtLink>
       </a-form-item>
       <a-divider>Or</a-divider>
       <a-button html-type="button" type="danger" block
@@ -33,33 +32,25 @@
 export default {
   auth: false,
   layout: "auth",
+
   data: function () {
     return {
-      email: "",
+      googleLoginUrl: `${process.env.STRAPI_URL}/api/connect/google`,
+      identifier: "",
       password: "",
-      passwordConfirmation: "",
-      readTerms: false,
+      remember: "",
     };
   },
   methods: {
     async handleSubmit() {
-      if (this.passwordConfirmation !== this.password) {
-        this.$message.error("Passwords do not match");
-        return;
-      }
-
       try {
-        await this.$axios({
-          url: "auth/local/register",
-          method: "post",
+        await this.$auth.loginWith("local", {
           data: {
-            email: this.email,
+            identifier: this.identifier,
             password: this.password,
-            username: this.email,
           },
         });
-        this.$router.replace("/user/login");
-        this.$message.success("Verification mail sent, Please check inbox");
+        this.$router.replace("/");
       } catch (err) {
         if (err.response.data.error.details.errors) {
           this.$message.error(
@@ -73,9 +64,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.register-form {
-  max-width: 400px;
-}
-</style>

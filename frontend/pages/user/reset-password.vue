@@ -1,52 +1,54 @@
 <template>
-  <div class="container-tight">
-    <form
-      class="card card-md"
-      @submit.prevent="handleSubmit"
-      autocomplete="off"
-    >
-      <div class="card-body">
-        <h2 class="card-title text-center mb-4">Reset password</h2>
-        <InputBase
-          label="New Password"
-          name="password"
-          type="password"
-        ></InputBase>
-        <InputBase
-          label="Password Confirmation"
-          name="passwordConfirmation"
-          type="password"
-        ></InputBase>
-        <div class="form-footer">
-          <ButtonAsync
-            label="Reset Password"
-            type="submit"
-            class="btn btn-primary w-100"
-          ></ButtonAsync>
-        </div>
-      </div>
-    </form>
-    <div class="text-center text-muted mt-3">
-      Already have an account?
-      <NuxtLink to="/">Sign in</NuxtLink>
-    </div>
-  </div>
+  <a-card hoverable>
+    <a-form layout="vertical" autocomplete="off" @submit.prevent="handleSubmit">
+      <a-form-item label="New Password">
+        <a-input-password v-model="password" />
+      </a-form-item>
+
+      <a-form-item label="Password Confirmation">
+        <a-input-password v-model="passwordConfirmation" />
+      </a-form-item>
+
+      <a-form-item>
+        <a-button type="primary" html-type="submit" style="margin: 1rem 0" block
+          >Reset Password</a-button
+        >
+        Doesn't want to reset password?
+        <NuxtLink to="/user/login"> Login </NuxtLink>
+      </a-form-item>
+    </a-form>
+  </a-card>
 </template>
 
 <script>
 export default {
   auth: false,
   layout: "auth",
+  data() {
+    return {
+      password: "",
+      passwordConfirmation: "",
+    };
+  },
   methods: {
-    async handleSubmit(event) {
+    async handleSubmit() {
       try {
         await this.$axios.post("auth/reset-password", {
           code: this.$route.query.code,
-          password: event.target.password.value,
-          passwordConfirmation: event.target.passwordConfirmation.value,
+          password: this.password,
+          passwordConfirmation: this.passwordConfirmation,
         });
-        this.$router.replace("/");
-      } catch (e) {}
+        this.$router.replace("/user/login");
+        this.$message.success("Password reset successfully");
+      } catch (err) {
+        if (err.response.data.error.details.errors) {
+          this.$message.error(
+            err.response.data.error.details.errors[0].message
+          );
+        } else {
+          this.$message.error(err.response.data.error.message);
+        }
+      }
     },
   },
 };

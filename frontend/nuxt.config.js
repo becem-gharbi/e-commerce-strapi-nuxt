@@ -21,23 +21,17 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'stylesheet', href: 'https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css' },
-      { rel: 'stylesheet', href: 'https://api.mapbox.com/mapbox-gl-js/v2.8.2/mapbox-gl.css' },
-    ],
-    script: [
-      {
-        src: 'https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js',
-      },
     ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    "~/assets/variables.less"
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/axios.js'
+    '@/plugins/antd-ui', '@/plugins/utils.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -50,7 +44,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios', 'vue-sweetalert2/nuxt', '@nuxtjs/auth-next', '@nuxtjs/dayjs', '@nuxtjs/dotenv',
+    '@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/dayjs', '@nuxtjs/dotenv',
   ],
 
   dayjs: {
@@ -62,10 +56,10 @@ export default {
   auth: {
     // Options
     redirect: {
-      login: '/',
-      logout: '/',
+      login: '/user/login',
+      logout: false,
       callback: false,
-      home: '/home',
+      home: '/',
     },
     strategies: {
       local: {
@@ -90,19 +84,8 @@ export default {
     },
   },
 
-
   router: {
-    middleware: ['auth']
-  },
-
-  sweetalert: {
-    confirmButtonColor: '#d63939',
-    cancelButtonColor: '#206bc4',
-    padding: "1rem",
-    width: "27rem",
-    reverseButtons: true,
-    focusConfirm: false,
-    confirmButtonText: "Delete",
+    middleware: ['init', 'auth']
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -113,5 +96,10 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    loaders: {
+      less: {
+        javascriptEnabled: true,
+      }
+    }
   },
 }
