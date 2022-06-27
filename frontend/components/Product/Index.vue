@@ -1,17 +1,9 @@
 <template>
   <div>
     <a-card hoverable size="small">
-      <a-rate
-        v-if="$auth.loggedIn"
-        :count="1"
-        style="position: absolute; top: 0; left: 5px"
-        :value="isFavourite"
-        disabled
-      />
-
       <a-badge
         :count="`${product.price} ${product.currency}`"
-        style="position: absolute; top: 6px; right: 5px"
+        style="position: absolute; top: 6px; left: 5px"
       >
       </a-badge>
 
@@ -20,12 +12,29 @@
         :src="product.image[0]"
         height="150px"
         style="object-fit: cover"
+        @click="modalVisible = true"
       />
 
-      <a-card-meta
-        :title="product.name"
-        :description="$dayjs().to($dayjs(product.createdAt))"
-      >
+      <a-card-meta>
+        <template slot="title">
+          {{ product.name }}
+          <a-rate
+            v-if="$auth.loggedIn"
+            :count="1"
+            :value="isFavourite"
+            @change="toggleFavourite()"
+          />
+        </template>
+        <template slot="description">
+          {{ $dayjs().to($dayjs(product.createdAt))
+          }}<a
+            v-if="authorVisible"
+            @click="handleViewAuthor"
+            type="link"
+            style="float: right"
+            >Author</a
+          ></template
+        >
       </a-card-meta>
 
       <template slot="actions" class="ant-card-actions">
@@ -44,18 +53,6 @@
             <a-icon key="delete" type="delete" />
           </a-popconfirm>
         </template>
-
-        <template v-else>
-          <a-icon
-            v-if="$auth.loggedIn"
-            key="add"
-            type="plus"
-            @click="toggleFavourite"
-          />
-          <a-icon key="user" type="user" @click="handleViewAuthor" />
-        </template>
-
-        <a-icon key="more" type="more" @click="modalVisible = true"></a-icon>
       </template>
     </a-card>
 
@@ -91,6 +88,10 @@ export default {
     editEnable: {
       type: Boolean,
       default: false,
+    },
+    authorVisible: {
+      type: Boolean,
+      default: true,
     },
   },
 

@@ -51,8 +51,9 @@ export default {
     this.email = res.data.email;
     this.image = res.data.image
       ? process.env.NODE_ENV === "production"
-        ? res.data.image.url
-        : `${process.env.STRAPI_URL}${res.data.image.url}`
+        ? res.data.image.url + `?rand=${Math.random()}`
+        : `${process.env.STRAPI_URL}${res.data.image.url}` +
+          `?rand=${Math.random()}`
       : require("@/assets/no_profile.png");
   },
 };

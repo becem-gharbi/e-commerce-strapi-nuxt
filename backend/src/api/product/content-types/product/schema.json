@@ -15,7 +15,8 @@
     "name": {
       "type": "string",
       "required": true,
-      "minLength": 3
+      "minLength": 3,
+      "maxLength": 15
     },
     "description": {
       "type": "text",

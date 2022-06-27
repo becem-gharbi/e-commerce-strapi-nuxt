@@ -1,9 +1,9 @@
 <template>
   <a-card title="Latest Products" :bordered="false" size="small">
     <a-space slot="extra">
-      <a-button icon="filter" @click="modalVisible = true" type="primary">Filters</a-button>
+      <a-button icon="filter" @click="modalVisible = true">Filters</a-button>
       <NuxtLink v-if="editEnable" :to="'/product/add'"
-        ><a-button icon="plus" type="primary">Add</a-button></NuxtLink
+        ><a-button icon="plus">Add</a-button></NuxtLink
       >
     </a-space>
 
@@ -12,7 +12,7 @@
       <a-row :gutter="[15, 15]">
         <a-col
           :xs="12"
-          :sm="12"
+          :sm="8"
           :md="8"
           :lg="5"
           v-for="product of products"
@@ -21,6 +21,7 @@
           <Product
             :product="product"
             :editEnable="editEnable"
+            :authorVisible="authorVisible"
             @onDelete="$fetch()"
           />
         </a-col>
@@ -53,6 +54,10 @@ export default {
     editEnable: {
       type: Boolean,
       default: false,
+    },
+    authorVisible: {
+      type: Boolean,
+      default: true,
     },
   },
 

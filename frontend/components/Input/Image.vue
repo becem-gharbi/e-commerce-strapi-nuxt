@@ -24,7 +24,7 @@ export default {
 
   data() {
     return {
-      imageUrl: this.value + `?rand=${Math.random()}`,
+      imageUrl: this.value,
     };
   },
 

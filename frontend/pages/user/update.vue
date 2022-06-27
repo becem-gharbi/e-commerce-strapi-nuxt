@@ -45,11 +45,12 @@ export default {
     return {
       fullname: this.$auth.user.fullname,
       location: { ...this.$auth.user.location },
-      facebookLink: this.$auth.user.link,
+      facebookLink: this.$auth.user.facebookLink,
       image: this.$auth.user.image
         ? process.env.NODE_ENV === "production"
-          ? this.$auth.user.image.url
-          : `${process.env.STRAPI_URL}${this.$auth.user.image.url}`
+          ? this.$auth.user.image.url + `?rand=${Math.random()}`
+          : `${process.env.STRAPI_URL}${this.$auth.user.image.url}` +
+            `?rand=${Math.random()}`
         : require("@/assets/no_profile.png"),
     };
   },
@@ -58,6 +59,8 @@ export default {
     async handleSubmit() {
       try {
         const formData = new FormData();
+
+        this.location.country = this.$store.state.country;
 
         const data = {
           fullname: this.fullname,
