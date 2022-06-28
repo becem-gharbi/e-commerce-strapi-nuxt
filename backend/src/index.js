@@ -1,6 +1,6 @@
 'use strict';
 
-const session = require("koa-session2");
+//const session = require("koa-session2");
 
 
 module.exports = {
@@ -11,11 +11,11 @@ module.exports = {
    * This gives you an opportunity to extend code.
    */
   // register(/*{ strapi }*/) {},
-  register({ strapi }) {
-    strapi.server.use(session({
-      secret: "grant",
-    }));
-  },
+  // register({ strapi }) {
+  //   strapi.server.use(session({
+  //     secret: "grant",
+  //   }));
+  // },
 
 
   /**
