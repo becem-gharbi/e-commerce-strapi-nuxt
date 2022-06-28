@@ -2,10 +2,6 @@
   <a-row type="flex" justify="center">
     <a-col :xs="24" :sm="24" :md="12" :lg="8">
       <a-form layout="vertical" @submit.prevent="handleSubmit">
-        <a-form-item label="Image">
-          <InputImage v-model="image" />
-        </a-form-item>
-
         <a-form-item label="Name">
           <a-input v-model="fullname" />
         </a-form-item>
@@ -24,6 +20,10 @@
               {{ state }}</a-select-option
             >
           </a-select>
+        </a-form-item>
+
+        <a-form-item label="Image">
+          <ImageUpload ref="imageUpload" :images="[image]" />
         </a-form-item>
 
         <a-form-item>
@@ -46,20 +46,13 @@ export default {
       fullname: this.$auth.user.fullname,
       location: { ...this.$auth.user.location },
       facebookLink: this.$auth.user.facebookLink,
-      image: this.$auth.user.image
-        ? process.env.NODE_ENV === "production"
-          ? this.$auth.user.image.url + `?rand=${Math.random()}`
-          : `${process.env.STRAPI_URL}${this.$auth.user.image.url}` +
-            `?rand=${Math.random()}`
-        : require("@/assets/no_profile.png"),
+      image: this.$auth.user.image,
     };
   },
 
   methods: {
     async handleSubmit() {
       try {
-        const formData = new FormData();
-
         this.location.country = this.$store.state.country;
 
         const data = {
@@ -68,11 +61,13 @@ export default {
           facebookLink: this.facebookLink,
         };
 
-        formData.append("data", JSON.stringify(data));
+        const res = await this.$axios.put(`/users/${this.$auth.user.id}`, data);
 
-        formData.append("files.image", this.image);
-
-        await this.$axios.put(`/users/me`, formData);
+        await this.$refs.imageUpload.upload(
+          "plugin::users-permissions.user",
+          res.data.id,
+          "image"
+        );
 
         await this.$auth.fetchUser();
 

@@ -19,19 +19,19 @@ export default {
       access_token: this.$route.query.access_token,
     };
   },
-  // async mounted() {
-  //   try {
-  //     const res = await this.$axios.$get(
-  //       `/auth/google/callback?access_token=${this.access_token}`
-  //     );
+  async mounted() {
+    try {
+      const res = await this.$axios.$get(
+        `/auth/google/callback?access_token=${this.access_token}`
+      );
 
-  //     const { jwt } = res;
+      const { jwt } = res;
 
-  //     await this.$auth.setUserToken(jwt);
-  //     this.$router.replace("/");
-  //   } catch (err) {
-  //     this.$router.replace("/");
-  //   }
-  // },
+      await this.$auth.setUserToken(jwt);
+      this.$router.replace("/");
+    } catch (err) {
+      this.$router.replace("/");
+    }
+  },
 };
 </script>

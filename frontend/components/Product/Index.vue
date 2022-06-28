@@ -9,7 +9,7 @@
 
       <img
         slot="cover"
-        :src="product.image[0]"
+        :src="product.images[0]"
         height="150px"
         style="object-fit: cover"
         @click="modalVisible = true"
@@ -63,7 +63,7 @@
       okText="View Author"
       :footer="null"
     >
-      <Carousel :images="product.image" />
+      <Carousel :images="product.images" />
 
       <br />
       <h4>Description</h4>

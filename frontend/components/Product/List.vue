@@ -95,7 +95,7 @@ export default {
       filters: this.filters,
       pagination: this.pagination,
       populate: {
-        image: "*",
+        images: "*",
         user: {
           populate: "image",
         },
@@ -112,7 +112,7 @@ export default {
         id: product.id,
         name: product.attributes.name,
         price: product.attributes.price,
-        image: this.$getFilesUrl(product.attributes.image.data),
+        images: this.$getFilesUrl(product.attributes.images.data),
         createdAt: product.attributes.createdAt,
         currency: product.attributes.currency,
         description: product.attributes.description,

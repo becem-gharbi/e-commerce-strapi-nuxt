@@ -49,12 +49,7 @@ export default {
     this.location = res.data.location;
     this.facebookLink = res.data.facebookLink;
     this.email = res.data.email;
-    this.image = res.data.image
-      ? process.env.NODE_ENV === "production"
-        ? res.data.image.url + `?rand=${Math.random()}`
-        : `${process.env.STRAPI_URL}${res.data.image.url}` +
-          `?rand=${Math.random()}`
-      : require("@/assets/no_profile.png");
+    this.image = this.$getFileUrl(res.data.image);
   },
 };
 </script>

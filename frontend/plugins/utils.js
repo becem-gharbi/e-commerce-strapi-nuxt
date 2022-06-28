@@ -3,9 +3,9 @@ export default ({ app }, inject) => {
     inject('getFileUrl', (data) => {
         if (data) {
             if (process.env.NODE_ENV === "production") {
-                return data.attributes.url;
+                return (data.attributes ? data.attributes.url : data.url);
             }
-            return `${process.env.STRAPI_URL}${data.attributes.url}`;
+            return process.env.STRAPI_URL + (data.attributes ? data.attributes.url : data.url);
         }
         return require("@/assets/no_image.png");
     });
@@ -14,9 +14,9 @@ export default ({ app }, inject) => {
         if (data) {
             return data.flatMap(el => {
                 if (process.env.NODE_ENV === 'production') {
-                    return [el.attributes.url];
+                    return [el.attributes ? el.attributes.url : el.url];
                 }
-                return [`${process.env.STRAPI_URL}${el.attributes.url}`];
+                return [process.env.STRAPI_URL + (el.attributes ? el.attributes.url : el.url)];
             });
         }
         return [require("@/assets/no_image.png")]

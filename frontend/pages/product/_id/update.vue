@@ -27,7 +27,7 @@
         </a-form-item>
 
         <a-form-item label="Image">
-          <InputImages v-model="image" />
+          <ImageUpload ref="imageUpload" :images="images" :max="5" />
         </a-form-item>
 
         <a-form-item>
@@ -47,10 +47,10 @@
 import qs from "qs";
 
 export default {
-  async asyncData({ $axios, route, $getFilesUrl }) {
+  async asyncData({ $axios, route }) {
     const query = qs.stringify({
       populate: {
-        image: "*",
+        images: "*",
         category: "*",
       },
     });
@@ -58,19 +58,18 @@ export default {
     const res = await $axios.get(`/products/${route.params.id}?` + query);
 
     return {
+      id: res.data.data.id,
       name: res.data.data.attributes.name,
       price: res.data.data.attributes.price,
       description: res.data.data.attributes.description,
       category: res.data.data.attributes.category.data.id,
-      image: $getFilesUrl(res.data.data.attributes.image.data),
+      images: res.data.data.attributes.images.data,
     };
   },
 
   methods: {
     async handleSubmit() {
       try {
-        const formData = new FormData();
-
         const data = {
           name: this.name,
           price: this.price,
@@ -78,11 +77,17 @@ export default {
           category: this.category,
         };
 
-        formData.append("data", JSON.stringify(data));
+        const res = await this.$axios.put(
+          `/products/${this.$route.params.id}`,
+          { data }
+        );
 
-        this.image.forEach((el) => formData.append("files.image", el));
+        await this.$refs.imageUpload.upload(
+          "api::product.product",
+          res.data.data.id,
+          "images"
+        );
 
-        await this.$axios.put(`/products/${this.$route.params.id}`, formData);
         this.$router.replace("/dashboard");
       } catch (err) {
         if (err.response.data.error.details.errors) {

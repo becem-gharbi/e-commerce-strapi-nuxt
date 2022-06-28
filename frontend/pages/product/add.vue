@@ -27,7 +27,7 @@
         </a-form-item>
 
         <a-form-item label="Images">
-          <InputImages v-model="image" />
+          <ImageUpload ref="imageUpload" :max="5" />
         </a-form-item>
 
         <a-form-item>
@@ -46,15 +46,12 @@ export default {
       price: "",
       description: "",
       category: this.$store.state.categories[0].id,
-      image: [],
     };
   },
 
   methods: {
     async handleSubmit() {
       try {
-        const formData = new FormData();
-
         const data = {
           user: this.$auth.user.id,
           name: this.name,
@@ -64,11 +61,14 @@ export default {
           currency: this.$store.state.currency,
         };
 
-        formData.append("data", JSON.stringify(data));
+        const res = await this.$axios.post("/products", { data });
 
-        this.image.forEach((el) => formData.append("files.image", el));
+        await this.$refs.imageUpload.upload(
+          "api::product.product",
+          res.data.data.id,
+          "images"
+        );
 
-        await this.$axios.post("/products", formData);
         this.$router.replace("/dashboard");
       } catch (err) {
         if (err.response.data.error.details.errors) {
