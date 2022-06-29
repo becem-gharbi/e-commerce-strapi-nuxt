@@ -8,12 +8,13 @@ module.exports = [
     'strapi::session',
     'strapi::favicon',
     'strapi::public',
-    {
-        name: 'strapi::cors',
-        config: {
-            enabled: true,
-            headers: '*',
-            origin: ['http://localhost:1337', "*"]
-        }
-    },
+    'strapi::cors',
+    // {
+    //     name: 'strapi::cors',
+    //     config: {
+    //         enabled: true,
+    //         headers: '*',
+    //         origin: ['http://localhost:1337', "*"]
+    //     }
+    // },
 ];
