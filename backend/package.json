@@ -1,8 +1,8 @@
 {
-  "name": "simple-backend",
+  "name": "e-commerce-strapi-nuxt-backend",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "e-commerce backend",
   "scripts": {
     "develop": "strapi develop",
     "start": "strapi start",
@@ -14,10 +14,10 @@
     "@strapi/plugin-users-permissions": "4.2.0",
     "@strapi/provider-email-sendgrid": "^4.2.2",
     "@strapi/strapi": "4.2.0",
-    "better-sqlite3": "7.4.6"
+    "sqlite3": "^5.0.8"
   },
   "author": {
-    "name": "A Strapi developer"
+    "name": "Becem Gharbi"
   },
   "strapi": {
     "uuid": "625c76a3-d8a9-43d3-880f-ddfde7a91d15"
