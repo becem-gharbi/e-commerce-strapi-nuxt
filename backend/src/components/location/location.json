@@ -2,7 +2,7 @@
   "collectionName": "components_location_locations",
   "info": {
     "displayName": "Location",
-    "description": ""
+    "icon": "map-marker-alt"
   },
   "options": {},
   "attributes": {

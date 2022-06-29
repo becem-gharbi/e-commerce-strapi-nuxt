@@ -1,5 +1,4 @@
 module.exports = ({ env }) => ({
-    // ...
     email: {
         config: {
             provider: 'sendgrid',
@@ -12,6 +11,4 @@ module.exports = ({ env }) => ({
             },
         },
     },
-    // ...
-
 });

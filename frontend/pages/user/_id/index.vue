@@ -4,7 +4,7 @@
       <Profile :user="$route.params.id" />
     </a-col>
     <a-col :xs="24" :sm="24" :md="17" :lg="20">
-      <ProductList :user="$route.params.id" :authorVisible="false" />
+      <ProductList :user="$route.params.id" />
     </a-col>
   </a-row>
 </template>

@@ -7,8 +7,9 @@
       >
     </a-space>
 
-    <EmptyState v-if="products.length === 0"></EmptyState>
-    <div v-else>
+    <a-empty v-if="products.length === 0" />
+
+    <template v-else>
       <a-row :gutter="[15, 15]">
         <a-col
           :xs="12"
@@ -21,23 +22,22 @@
           <Product
             :product="product"
             :editEnable="editEnable"
-            :authorVisible="authorVisible"
             @onDelete="$fetch()"
           />
         </a-col>
       </a-row>
-    </div>
 
-    <template slot="actions">
-      <a-pagination
-        slot="actions"
-        show-size-changer
-        :total="pagination.total"
-        :pageSize.sync="pagination.pageSize"
-        v-model="pagination.page"
-        @change="$fetch"
-        @showSizeChange="$fetch"
-    /></template>
+      <template slot="actions">
+        <a-pagination
+          slot="actions"
+          show-size-changer
+          :total="pagination.total"
+          :pageSize.sync="pagination.pageSize"
+          v-model="pagination.page"
+          @change="$fetch"
+          @showSizeChange="$fetch"
+      /></template>
+    </template>
 
     <ProductFilter :visible.sync="modalVisible" :filters.sync="filters" />
   </a-card>
@@ -54,10 +54,6 @@ export default {
     editEnable: {
       type: Boolean,
       default: false,
-    },
-    authorVisible: {
-      type: Boolean,
-      default: true,
     },
   },
 

@@ -112,9 +112,3 @@ exports
 *.cache
 build
 .strapi-updater.json
-
-app.yaml
-.gcloudignore
-
-controllers_list.md
-services_list.md

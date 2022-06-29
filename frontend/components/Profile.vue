@@ -8,8 +8,8 @@
       style="object-fit: contain"
     />
     <template slot="actions" class="ant-card-actions">
-      <a :href="facebookLink" target="_blank"
-        ><a-icon v-show="facebookLink" key="facebook" type="facebook"
+      <a v-if="facebookLink" :href="facebookLink" target="_blank"
+        ><a-icon key="facebook" type="facebook"
       /></a>
       <a :href="`mailto:${email}`"> <a-icon key="mail" type="mail" /></a>
     </template>

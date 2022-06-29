@@ -18,23 +18,17 @@
       <a-card-meta>
         <template slot="title">
           {{ product.name }}
+        </template>
+        <template slot="description">
+          {{ $dayjs().to($dayjs(product.createdAt)) }}
           <a-rate
+            style="float: right"
             v-if="$auth.loggedIn"
             :count="1"
             :value="isFavourite"
             @change="toggleFavourite()"
           />
         </template>
-        <template slot="description">
-          {{ $dayjs().to($dayjs(product.createdAt))
-          }}<a
-            v-if="authorVisible"
-            @click="handleViewAuthor"
-            type="link"
-            style="float: right"
-            >Author</a
-          ></template
-        >
       </a-card-meta>
 
       <template slot="actions" class="ant-card-actions">
@@ -61,7 +55,7 @@
       :dialog-style="{ top: '20px' }"
       :title="product.name"
       okText="View Author"
-      :footer="null"
+      @ok="handleViewAuthor"
     >
       <Carousel :images="product.images" />
 
@@ -89,10 +83,6 @@ export default {
       type: Boolean,
       default: false,
     },
-    authorVisible: {
-      type: Boolean,
-      default: true,
-    },
   },
 
   computed: {
@@ -113,25 +103,24 @@ export default {
 
   methods: {
     async toggleFavourite() {
-      const formData = new FormData();
-      let data = [];
+      let favouriteProducts = [];
 
       if (this.isFavourite) {
         for (let el of this.$auth.user.favouriteProducts) {
           if (el.id !== this.product.id) {
-            data.push(el.id);
+            favouriteProducts.push(el.id);
           }
         }
       } else {
         for (let el of this.$auth.user.favouriteProducts) {
-          data.push(el.id);
+          favouriteProducts.push(el.id);
         }
-        data.push(this.product.id);
+        favouriteProducts.push(this.product.id);
       }
 
-      formData.append("data", JSON.stringify({ favouriteProducts: data }));
-
-      await this.$axios.put(`/users/me`, formData);
+      await this.$axios.put(`/users/${this.$auth.user.id}`, {
+        favouriteProducts,
+      });
 
       await this.$auth.fetchUser();
 
@@ -157,7 +146,7 @@ export default {
 
       const userId = res.data[0].id;
 
-      this.$router.push("user/" + userId);
+      this.$router.push("/user/" + userId );
     },
   },
 };
