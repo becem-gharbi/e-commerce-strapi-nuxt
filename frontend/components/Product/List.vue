@@ -2,8 +2,8 @@
   <a-card title="Latest Products" :bordered="false" size="small">
     <a-space slot="extra">
       <a-button icon="filter" @click="modalVisible = true">Filters</a-button>
-      <NuxtLink v-if="editEnable" :to="'/product/add'"
-        ><a-button icon="plus">Add</a-button></NuxtLink
+      <a-button v-if="editEnable" icon="plus" @click="handleAddProduct()"
+        >Add</a-button
       >
     </a-space>
 
@@ -120,6 +120,15 @@ export default {
       pageSize: res.data.meta.pagination.pageSize,
       total: res.data.meta.pagination.total,
     };
+  },
+
+  methods: {
+    handleAddProduct() {
+      if (!this.$auth.user.fullname) {
+        return this.$message.error("Please complete your account details");
+      }
+      this.$router.push("/product/add");
+    },
   },
 };
 </script>
