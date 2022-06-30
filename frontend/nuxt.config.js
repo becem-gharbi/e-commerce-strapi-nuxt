@@ -2,7 +2,7 @@ require('dotenv').config();
 
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
-  // ssr: false,
+  ssr: false,
 
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -104,4 +104,7 @@ export default {
     }
   },
 
+  generate: {
+    fallback: true
+  }
 }
