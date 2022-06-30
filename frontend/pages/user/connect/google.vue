@@ -15,8 +15,8 @@ export default {
   },
   async mounted() {
     try {
-      const res = await this.$axios.$get(
-        `/auth/google/callback?access_token=${this.access_token}`
+      const res = await this.$axios.get(
+        `${this.$config.strapiUrl}/auth/google/callback?access_token=${this.access_token}`
       );
 
       const { jwt } = res;
@@ -26,7 +26,7 @@ export default {
       this.$router.replace("/");
     } catch (err) {
       this.$router.replace("/user/login");
-      this.$message.error("Failed to connect with Google");
+      this.$message.error(err.response.data.error.message);
     }
   },
 };
