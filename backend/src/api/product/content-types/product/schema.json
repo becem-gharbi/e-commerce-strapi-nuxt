@@ -13,10 +13,15 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "minLength": 3,
+      "maxLength": 15
     },
     "description": {
-      "type": "text"
+      "type": "text",
+      "required": true,
+      "minLength": 3
     },
     "price": {
       "type": "integer"
@@ -29,6 +34,12 @@
         "images"
       ]
     },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "products"
+    },
     "currency": {
       "type": "string"
     },
@@ -36,12 +47,6 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::category.category"
-    },
-    "user": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "plugin::users-permissions.user",
-      "inversedBy": "products"
     }
   }
 }
