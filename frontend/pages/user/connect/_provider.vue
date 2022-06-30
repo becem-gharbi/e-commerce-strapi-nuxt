@@ -1,6 +1,6 @@
 <template>
   <a-space direction="vertical" align="center" size="middle">
-    <h2>Connecting with Google</h2>
+    <h2>{{ "Connecting with " + provider }}</h2>
     <a-spin size="large" />
   </a-space>
 </template>
@@ -11,15 +11,16 @@ export default {
   data() {
     return {
       access_token: this.$route.query.access_token,
+      provider: this.$route.params.provider,
     };
   },
   async mounted() {
     try {
       const res = await this.$axios.get(
-        `/auth/google/callback?access_token=${this.access_token}`
+        `/auth/${this.provider}/callback?access_token=${this.access_token}`
       );
 
-      const { jwt } = res;
+      const jwt = res.data.jwt;
 
       await this.$auth.setUserToken(jwt);
 
