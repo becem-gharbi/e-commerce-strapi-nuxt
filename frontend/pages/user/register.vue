@@ -47,7 +47,7 @@ export default {
   layout: "auth",
   data: function () {
     return {
-      googleLoginUrl: `${this.$config.STRAPI_URL}/api/connect/google`,
+      googleLoginUrl: `${this.$config.strapiUrl}/api/connect/google`,
       email: "",
       password: "",
       passwordConfirmation: "",

@@ -44,7 +44,7 @@ export default {
 
   data: function () {
     return {
-      googleLoginUrl: `${this.$config.STRAPI_URL}/api/connect/google`,
+      googleLoginUrl: `${this.$config.strapiUrl}/api/connect/google`,
       identifier: "",
       password: "",
       remember: "",
