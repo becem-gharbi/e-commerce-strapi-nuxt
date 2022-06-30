@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   // ssr: false,
@@ -45,7 +43,7 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/dayjs', '@nuxtjs/dotenv',
+    '@nuxtjs/axios', '@nuxtjs/auth-next', '@nuxtjs/dayjs'
   ],
 
   dayjs: {
@@ -93,6 +91,12 @@ export default {
   axios: {
     baseURL: process.env.STRAPI_URL + '/api',
     progress: true,
+  },
+
+  publicRuntimeConfig: {
+    strapiUrl:process.env.STRAPI_URL,
+    ipInfoToken: process.env.IPINFO_TOKEN,
+    uploadBaseUrl: process.env.NODE_ENV === 'production' ? '' : process.env.STRAPI_URL
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

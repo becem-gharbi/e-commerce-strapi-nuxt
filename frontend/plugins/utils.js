@@ -1,11 +1,8 @@
-export default ({ app }, inject) => {
+export default ({ $config }, inject) => {
 
     inject('getFileUrl', (data) => {
         if (data) {
-            if (process.env.NODE_ENV === "production") {
-                return (data.attributes ? data.attributes.url : data.url);
-            }
-            return process.env.STRAPI_URL + (data.attributes ? data.attributes.url : data.url);
+            return $config.uploadBaseUrl + (data.attributes ? data.attributes.url : data.url);
         }
         return require("@/assets/no_image.png");
     });
@@ -13,10 +10,7 @@ export default ({ app }, inject) => {
     inject('getFilesUrl', (data) => {
         if (data) {
             return data.flatMap(el => {
-                if (process.env.NODE_ENV === 'production') {
-                    return [el.attributes ? el.attributes.url : el.url];
-                }
-                return [process.env.STRAPI_URL + (el.attributes ? el.attributes.url : el.url)];
+                return [$config.uploadBaseUrl + (el.attributes ? el.attributes.url : el.url)];
             });
         }
         return [require("@/assets/no_image.png")]

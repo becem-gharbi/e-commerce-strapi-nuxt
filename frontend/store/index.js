@@ -20,7 +20,7 @@ export const actions = {
             const categories = res.data.data;
             commit('SET_CATEGORIES', categories);
 
-            res = await this.$axios.get(`https://ipinfo.io/?token=${process.env.IPINFO_TOKEN}`);
+            res = await this.$axios.get(`https://ipinfo.io/?token=${this.$config.ipInfoToken}`);
             const countryCode = res.data.country;
 
             for (let el of countries) {
