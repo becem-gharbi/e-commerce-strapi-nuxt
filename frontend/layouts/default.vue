@@ -3,7 +3,7 @@
     <header>
       <div class="brand">{{ $config.brand }}</div>
       <div class="navigation">
-        <nuxt-link
+        <NuxtLink
           v-for="path in paths"
           :key="path.name"
           :to="path.route"
@@ -14,14 +14,14 @@
             <a-icon :type="path.icon" />
             <span>{{ path.name }}</span>
           </div>
-        </nuxt-link>
+        </NuxtLink>
         <div class="flex-btn">
           <a-icon type="logout" />
           <span @click="handleLogout" style="cursor: pointer">Logout</span>
         </div>
       </div>
     </header>
-    <main v-if="!$fetchState.pending"><nuxt /></main>
+    <main v-if="!$fetchState.pending"><Nuxt /></main>
   </div>
 </template>
 

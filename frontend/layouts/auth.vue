@@ -1,8 +1,8 @@
 <template>
   <div class="page-center">
-    <NuxtLink to="/">{{ $config.brand }}</NuxtLink>
+    <NuxtLink to="/"><h2>{{ $config.brand }}</h2></NuxtLink>
     <br />
-    <Nuxt style="max-width: 350px"></Nuxt>
+    <Nuxt />
     <br />
     <a
       href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"

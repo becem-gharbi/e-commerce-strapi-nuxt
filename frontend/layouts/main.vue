@@ -1,7 +1,9 @@
 <template>
   <div>
     <header>
-      <div class="brand"><NuxtLink to="/">{{ $config.brand }}</NuxtLink></div>
+      <div class="brand">
+        <NuxtLink to="/">{{ $config.brand }}</NuxtLink>
+      </div>
       <div class="navigation">
         <a
           href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
@@ -12,12 +14,13 @@
         <NuxtLink to="/user/register"><a-button>Register</a-button></NuxtLink>
       </div>
     </header>
-    <main v-if="!$fetchState.pending"><nuxt /></main>
+    <main v-if="!$fetchState.pending"><Nuxt /></main>
   </div>
 </template>
 
 <script>
 export default {
+  name: "MainLayout",
   fetchOnServer: false,
 
   async fetch() {
