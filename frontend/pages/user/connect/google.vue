@@ -1,14 +1,8 @@
 <template>
-  <div class="container-tight">
-    <div class="card card-md">
-      <div class="card-body text-center">
-        <h2 class="card-title text-center mb-4">
-          {{ "Connecting by Google" }}
-        </h2>
-        <div class="m-4 spinner-grow text-blue" role="status"></div>
-      </div>
-    </div>
-  </div>
+  <a-space direction="vertical" align="center" size="middle">
+    <h2>Connecting with Google</h2>
+    <a-spin size="large" />
+  </a-space>
 </template>
 <script>
 export default {
@@ -28,9 +22,11 @@ export default {
       const { jwt } = res;
 
       await this.$auth.setUserToken(jwt);
+
       this.$router.replace("/");
     } catch (err) {
-      this.$router.replace("/");
+      this.$router.replace("/user/login");
+      this.$message.error("Failed to connect with Google");
     }
   },
 };

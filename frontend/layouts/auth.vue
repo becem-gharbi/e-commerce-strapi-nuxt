@@ -1,8 +1,8 @@
 <template>
   <div class="page-center">
-    <NuxtLink to="/">BRAND</NuxtLink>
+    <NuxtLink to="/">{{ $config.brand }}</NuxtLink>
     <br />
-    <Nuxt style="max-width: 350px;"></Nuxt>
+    <Nuxt style="max-width: 350px"></Nuxt>
     <br />
     <a
       href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name:'Auth'
+  name: "Auth",
 };
 </script>
 

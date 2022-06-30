@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <div class="brand">BRAND</div>
+      <div class="brand">{{ $config.brand }}</div>
       <div class="navigation">
         <nuxt-link
           v-for="path in paths"
@@ -102,12 +102,23 @@ main {
   .flex-btn {
     flex-direction: column;
   }
+
+  .nuxt-link-active {
+    border-top: 3px solid #f5222d;
+    border-bottom: 0;
+  }
+
   .brand {
     display: none;
   }
   .navigation {
     justify-content: space-between;
     width: 100%;
+  }
+
+  header {
+    position: fixed;
+    bottom: 0;
   }
 }
 </style>

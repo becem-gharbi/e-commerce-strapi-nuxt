@@ -1,7 +1,7 @@
 <template>
   <div>
     <header>
-      <div class="brand"><NuxtLink to="/">BRAND</NuxtLink></div>
+      <div class="brand"><NuxtLink to="/">{{ $config.brand }}</NuxtLink></div>
       <div class="navigation">
         <a
           href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
