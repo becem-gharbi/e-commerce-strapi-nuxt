@@ -12,9 +12,21 @@
         <NuxtLink to="/user/register"><a-button>Register</a-button></NuxtLink>
       </div>
     </header>
-    <main><nuxt /></main>
+    <main v-if="!$fetchState.pending"><nuxt /></main>
   </div>
 </template>
+
+<script>
+export default {
+  fetchOnServer: false,
+
+  async fetch() {
+    if (!this.$store.state.initialized) {
+      await this.$store.dispatch("init");
+    }
+  },
+};
+</script>
 
 <style scoped>
 header {

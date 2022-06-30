@@ -21,12 +21,20 @@
         </div>
       </div>
     </header>
-    <main><nuxt /></main>
+    <main v-if="!$fetchState.pending"><nuxt /></main>
   </div>
 </template>
 
 <script>
 export default {
+  fetchOnServer: false,
+
+  async fetch() {
+    if (!this.$store.state.initialized) {
+      await this.$store.dispatch("init");
+    }
+  },
+
   data: function () {
     return {
       paths: [
