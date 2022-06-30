@@ -30,7 +30,7 @@ export default {
   text-align: center;
   height: 300px;
   line-height: 300px;
-  background: #364e791c;
+  background: transparent;
   overflow: hidden;
   border-radius: 5px;
 }
@@ -39,8 +39,8 @@ export default {
   width: 25px;
   height: 25px;
   font-size: 25px;
-  color: #fff;
-  background-color: rgba(213, 213, 213, 0);
+  color: rgb(212, 212, 212);
+  background-color: transparent;
   opacity: 0.7;
 }
 .ant-carousel >>> .custom-slick-arrow:before {
@@ -48,10 +48,6 @@ export default {
 }
 .ant-carousel >>> .custom-slick-arrow:hover {
   opacity: 0.8;
-}
-
-.ant-carousel >>> .slick-slide h3 {
-  color: #fff;
 }
 
 img {

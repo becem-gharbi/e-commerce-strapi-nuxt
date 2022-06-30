@@ -7,7 +7,8 @@
       >
     </a-space>
 
-    <a-empty v-if="products.length === 0" />
+    <a-spin v-if="$fetchState.pending" :indicator="indicator" />
+    <a-empty v-else-if="products.length === 0" />
 
     <template v-else>
       <a-row :gutter="[15, 15]">
