@@ -16,7 +16,7 @@ export default {
   async mounted() {
     try {
       const res = await this.$axios.get(
-        `${this.$config.strapiUrl}/auth/google/callback?access_token=${this.access_token}`
+        `/auth/google/callback?access_token=${this.access_token}`
       );
 
       const { jwt } = res;
