@@ -14,6 +14,8 @@ export const actions = {
 
         try {
 
+            console.log("initialize store");
+
             let res = await this.$axios.get("/categories");
             const categories = res.data.data;
             commit('SET_CATEGORIES', categories);
