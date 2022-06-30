@@ -28,7 +28,7 @@
 
       <a-divider>Or</a-divider>
 
-      <a :href="googleLoginUrl" target="_blank"
+      <a :href="googleLoginUrl"
         ><a-button html-type="button" type="danger" block
           >Login with Google</a-button
         ></a

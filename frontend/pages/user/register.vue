@@ -32,9 +32,9 @@
         <NuxtLink to="/user/login"> Login </NuxtLink>
       </a-form-item>
       <a-divider>Or</a-divider>
-      <a :href="googleLoginUrl" target="_blank"
+      <a :href="googleLoginUrl"
         ><a-button html-type="button" type="danger" block
-          >Login with Google</a-button
+          >Register with Google</a-button
         ></a
       >
     </a-form>
