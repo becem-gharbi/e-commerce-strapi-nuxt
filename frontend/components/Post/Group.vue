@@ -11,12 +11,12 @@
     <a-empty v-else-if="posts.length === 0" />
 
     <template v-else>
-      <a-row :gutter="[15, 15]">
+      <a-row :gutter="[13, 13]">
         <a-col
           :xs="12"
           :sm="8"
           :md="8"
-          :lg="5"
+          :lg="4"
           v-for="post of posts"
           :key="post.id"
         >

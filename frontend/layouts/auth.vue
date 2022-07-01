@@ -5,11 +5,7 @@
     /></NuxtLink>
     <br />
     <br />
-    <Nuxt />
-    <br>
-        <!-- <NuxtLink to="/"
-      ><img :src="require('@/assets/logo.png')" height="35px"
-    /></NuxtLink> -->
+    <Nuxt/>
   </div>
 </template>
 
