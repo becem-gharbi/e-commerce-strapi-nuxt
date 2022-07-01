@@ -2,9 +2,7 @@
   <PostGroup
     title="My Posts"
     :inFilters="{
-      author: {
-        id: this.$auth.user.id,
-      },
+      author: $auth.user.id,
     }"
     :editEnable="true"
   />

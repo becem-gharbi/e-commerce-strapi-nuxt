@@ -6,7 +6,7 @@
           <a-input v-model="name" />
         </a-form-item>
 
-        <a-form-item label="Price">
+        <a-form-item :label="'Price [' + $store.state.currency + ']'">
           <a-input v-model="price" type="number" />
         </a-form-item>
 
@@ -77,10 +77,9 @@ export default {
           category: this.category,
         };
 
-        const res = await this.$axios.put(
-          `/posts/${this.$route.params.id}`,
-          { data }
-        );
+        const res = await this.$axios.put(`/posts/${this.$route.params.id}`, {
+          data,
+        });
 
         await this.$refs.imageUpload.upload(
           "api::post.post",

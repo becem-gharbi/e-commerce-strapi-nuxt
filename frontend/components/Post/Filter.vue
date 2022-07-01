@@ -38,7 +38,7 @@
         </a-select>
       </a-form-item>
 
-      <a-form-item label="Price Range">
+      <a-form-item :label="'Price Range [' + $store.state.currency + ']'">
         <a-slider v-model="priceRange" :max="3000" :marks="marks" :step="10" />
       </a-form-item>
     </a-form>

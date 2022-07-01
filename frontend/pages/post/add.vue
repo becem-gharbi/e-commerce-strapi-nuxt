@@ -6,7 +6,7 @@
           <a-input v-model="name" />
         </a-form-item>
 
-        <a-form-item label="Price">
+        <a-form-item :label="'Price [' + $store.state.currency + ']'">
           <a-input v-model="price" type="number" />
         </a-form-item>
 

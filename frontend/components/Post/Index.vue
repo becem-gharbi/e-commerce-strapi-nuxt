@@ -37,22 +37,20 @@
         </template>
       </a-card-meta>
 
-      <template slot="actions" class="ant-card-actions">
-        <template v-if="editEnable">
-          <a-icon
-            key="edit"
-            type="edit"
-            @click="$router.push(`/post/${post.id}/update`)"
-          />
-          <a-popconfirm
-            title="Are you sure delete this post?"
-            ok-text="Yes"
-            cancel-text="No"
-            @confirm="handleDelete()"
-          >
-            <a-icon key="delete" type="delete" />
-          </a-popconfirm>
-        </template>
+      <template v-if="editEnable" slot="actions" class="ant-card-actions">
+        <a-icon
+          key="edit"
+          type="edit"
+          @click="$router.push(`/post/${post.id}/update`)"
+        />
+        <a-popconfirm
+          title="Are you sure delete this post?"
+          ok-text="Yes"
+          cancel-text="No"
+          @confirm="handleDelete()"
+        >
+          <a-icon key="delete" type="delete" />
+        </a-popconfirm>
       </template>
     </a-card>
 

@@ -4,7 +4,12 @@
       <Profile :user="$route.params.id" />
     </a-col>
     <a-col :xs="24" :sm="24" :md="17" :lg="20">
-      <PostGroup :user="$route.params.id" />
+      <PostGroup
+        title="Latest Posts"
+        :inFilters="{
+          author: $route.params.id,
+        }"
+      />
     </a-col>
   </a-row>
 </template>

@@ -3,7 +3,7 @@
     title="Liked Posts"
     :inFilters="{
       id: {
-        $in: this.likes,
+        $in: likes,
       },
     }"
   />

@@ -14,6 +14,8 @@
 <script>
 export default {
   auth: false,
-  layout: (context) => (context.$auth.loggedIn ? "default" : "main"),
+  layout({ $auth }) {
+    return $auth.loggedIn ? "default" : "main";
+  },
 };
 </script>
