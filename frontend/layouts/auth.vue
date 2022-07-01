@@ -6,12 +6,10 @@
     <br />
     <br />
     <Nuxt />
-    <br />
-    <a
-      href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
-      target="_blank"
-      ><a-button icon="github"> Open Source </a-button></a
-    >
+    <br>
+        <!-- <NuxtLink to="/"
+      ><img :src="require('@/assets/logo.png')" height="35px"
+    /></NuxtLink> -->
   </div>
 </template>
 
