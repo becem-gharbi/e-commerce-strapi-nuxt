@@ -1,7 +1,9 @@
 <template>
   <div>
     <header>
-      <div class="brand">{{ $config.brand }}</div>
+      <div class="brand">
+        <img :src="require('@/assets/logo.png')" height="35px" />
+      </div>
       <div class="navigation">
         <NuxtLink
           v-for="path in paths"
@@ -40,6 +42,7 @@ export default {
       paths: [
         { name: "Home", route: "/", icon: "home" },
         { name: "Dashboard", route: "/dashboard", icon: "appstore" },
+        { name: "Activity", route: "/activity", icon: "history" },
         { name: "Account", route: "/user/update", icon: "user" },
       ],
     };

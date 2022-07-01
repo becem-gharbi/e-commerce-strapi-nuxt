@@ -94,7 +94,6 @@ export default {
   },
 
   publicRuntimeConfig: {
-    brand: 'My Brand',
     strapiUrl: process.env.STRAPI_URL,
     ipInfoToken: process.env.IPINFO_TOKEN,
     uploadBaseUrl: process.env.NODE_ENV === 'production' ? '' : process.env.STRAPI_URL

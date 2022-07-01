@@ -2,7 +2,9 @@
   <div>
     <header>
       <div class="brand">
-        <NuxtLink to="/">{{ $config.brand }}</NuxtLink>
+        <NuxtLink to="/"
+          ><img :src="require('@/assets/logo.png')" height="35px"
+        /></NuxtLink>
       </div>
       <div class="navigation">
         <a

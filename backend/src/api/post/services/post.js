@@ -1,9 +1,9 @@
 'use strict';
 
 /**
- * product service.
+ * post service.
  */
 
 const { createCoreService } = require('@strapi/strapi').factories;
 
-module.exports = createCoreService('api::product.product');
+module.exports = createCoreService('api::post.post');

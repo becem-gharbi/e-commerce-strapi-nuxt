@@ -1,4 +1,4 @@
-import countries from "@/assets/countriesDb.json";
+import countries from "@/assets/countries.json";
 
 export const state = () => ({
     initialized: false,
@@ -13,28 +13,6 @@ export const actions = {
     async init({ commit }) {
 
         try {
-
-            // const result = [];
-
-            // for (let el of countries) {
-            //     let states = el.states;
-            //     let sanitizedStates = [];
-            //     for (let i of states) {
-            //         sanitizedStates.push({
-            //             name: i.name
-            //         })
-            //     }
-            //     result.push({
-            //         name: el.name,
-            //         iso2: el.iso2,
-            //         currency: el.currency,
-            //         states: sanitizedStates
-            //     });
-            // }
-
-            // console.log(result);
-
-            console.log("initialize store");
 
             let res = await this.$axios.get("/categories");
             const categories = res.data.data;

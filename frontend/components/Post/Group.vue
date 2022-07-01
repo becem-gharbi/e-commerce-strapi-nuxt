@@ -1,14 +1,14 @@
 <template>
-  <a-card title="Latest Products" :bordered="false" size="small">
+  <a-card :title="title" :bordered="false" size="small">
     <a-space slot="extra">
       <a-button icon="filter" @click="modalVisible = true">Filters</a-button>
-      <a-button v-if="editEnable" icon="plus" @click="handleAddProduct()"
+      <a-button v-if="editEnable" icon="plus" @click="handleAddPost()"
         >Add</a-button
       >
     </a-space>
 
-    <a-spin v-if="$fetchState.pending"/>
-    <a-empty v-else-if="products.length === 0" />
+    <a-spin v-if="$fetchState.pending" />
+    <a-empty v-else-if="posts.length === 0" />
 
     <template v-else>
       <a-row :gutter="[15, 15]">
@@ -17,14 +17,10 @@
           :sm="8"
           :md="8"
           :lg="5"
-          v-for="product of products"
-          :key="product.id"
+          v-for="post of posts"
+          :key="post.id"
         >
-          <Product
-            :product="product"
-            :editEnable="editEnable"
-            @onDelete="$fetch()"
-          />
+          <Post :post="post" :editEnable="editEnable" @onDelete="$fetch()" />
         </a-col>
       </a-row>
 
@@ -40,7 +36,7 @@
       /></template>
     </template>
 
-    <ProductFilter :visible.sync="modalVisible" :filters.sync="filters" />
+    <PostFilter :visible.sync="modalVisible" :filters.sync="filters" />
   </a-card>
 </template>
 
@@ -49,7 +45,11 @@ import qs from "qs";
 
 export default {
   props: {
-    user: {
+    title: {
+      type: String,
+    },
+
+    inFilters: {
       default: () => ({}),
     },
     editEnable: {
@@ -60,14 +60,7 @@ export default {
 
   data() {
     return {
-      filters: {
-        user: {
-          id: this.user,
-          location: {
-            country: this.$store.state.country,
-          },
-        },
-      },
+      filters: this.inFilters,
 
       pagination: {
         page: 1,
@@ -75,7 +68,7 @@ export default {
         total: 1,
       },
 
-      products: [],
+      posts: [],
 
       modalVisible: false,
     };
@@ -93,26 +86,28 @@ export default {
       pagination: this.pagination,
       populate: {
         images: "*",
-        user: {
+        likedBy: "*",
+        author: {
           populate: "image",
         },
       },
       sort: ["updatedAt:desc"],
     });
 
-    const res = await this.$axios.get("/products?" + query);
+    const res = await this.$axios.get("/posts?" + query);
 
-    this.products = [];
+    this.posts = [];
 
-    res.data.data.forEach((product) => {
-      this.products.push({
-        id: product.id,
-        name: product.attributes.name,
-        price: product.attributes.price,
-        images: this.$getFilesUrl(product.attributes.images.data),
-        createdAt: product.attributes.createdAt,
-        currency: product.attributes.currency,
-        description: product.attributes.description,
+    res.data.data.forEach((post) => {
+      this.posts.push({
+        id: post.id,
+        name: post.attributes.name,
+        price: post.attributes.price,
+        images: this.$getFilesUrl(post.attributes.images.data),
+        createdAt: post.attributes.createdAt,
+        currency: post.attributes.currency,
+        description: post.attributes.description,
+        likedBy: post.attributes.likedBy.data,
       });
     });
 
@@ -124,11 +119,11 @@ export default {
   },
 
   methods: {
-    handleAddProduct() {
+    handleAddPost() {
       if (!this.$auth.user.fullname) {
         return this.$message.error("Please complete your account details");
       }
-      this.$router.push("/product/add");
+      this.$router.push("/post/add");
     },
   },
 };

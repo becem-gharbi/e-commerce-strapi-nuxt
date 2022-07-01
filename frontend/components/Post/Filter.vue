@@ -11,14 +11,6 @@
         <a-input placeholder="input search text" v-model="searchText" />
       </a-form-item>
 
-      <a-form-item v-if="$auth.loggedIn" label="My Favourites">
-        <a-checkbox
-          :checked="onlyFavourites"
-          @change="(e) => (onlyFavourites = e.target.checked)"
-          >Only</a-checkbox
-        >
-      </a-form-item>
-
       <a-form-item label="Category">
         <a-select v-model="category">
           <a-select-option
@@ -29,7 +21,7 @@
             {{ category.attributes.name }}
           </a-select-option>
 
-          <a-select-option :value="{}">--</a-select-option>
+          <a-select-option value="">--</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -42,7 +34,7 @@
           >
             {{ state }}</a-select-option
           >
-          <a-select-option :value="{}">--</a-select-option>
+          <a-select-option value="">--</a-select-option>
         </a-select>
       </a-form-item>
 
@@ -63,9 +55,8 @@ export default {
   data() {
     return {
       searchText: "",
-      onlyFavourites: false,
-      category: {},
-      state: {},
+      category: "",
+      state: "",
       priceRange: 3000,
       marks: {
         0: "0",
@@ -76,46 +67,23 @@ export default {
     };
   },
 
-  computed: {
-    favouriteProducts() {
-      let data = [-1];
-      for (let el of this.$auth.user.favouriteProducts) {
-        data.push(el.id);
-      }
-      return data;
-    },
-  },
-
   methods: {
     handleOk() {
-      const newFilters = {
-        name: {
-          $containsi: this.searchText,
-        },
+      const newFilters = this.filters;
 
-        id: !this.onlyFavourites
-          ? {}
-          : {
-              $in: this.favouriteProducts,
-            },
-
-        category: this.category,
-
-        price: {
-          $lt: this.priceRange,
-        },
-
-        user: {
-          id: this.filters.user.id,
-          location: {
-            state: this.state,
-            country: this.filters.user.location.country,
-          },
+      newFilters.name = { $containsi: this.searchText };
+      newFilters.category = this.category ? this.category : {};
+      newFilters.price = {
+        $lt: this.priceRange,
+      };
+      newFilters.author = {
+        ...newFilters.author,
+        location: {
+          state: this.state ? this.state : {},
         },
       };
 
       this.$emit("update:filters", {
-        ...this.filters,
         ...newFilters,
       });
 

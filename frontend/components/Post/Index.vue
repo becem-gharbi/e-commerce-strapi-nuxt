@@ -2,14 +2,14 @@
   <div>
     <a-card hoverable size="small">
       <a-badge
-        :count="`${product.price} ${product.currency}`"
+        :count="`${post.price} ${post.currency}`"
         style="position: absolute; top: 6px; left: 5px"
       >
       </a-badge>
 
       <img
         slot="cover"
-        :src="product.images[0]"
+        :src="post.images[0]"
         height="150px"
         style="object-fit: cover"
         @click="modalVisible = true"
@@ -17,17 +17,18 @@
 
       <a-card-meta>
         <template slot="title">
-          {{ product.name }}
+          {{ post.name }}
         </template>
+
         <template slot="description">
-          {{ $dayjs().to($dayjs(product.createdAt)) }}
-          <a-rate
-            style="float: right"
-            v-if="$auth.loggedIn"
-            :count="1"
-            :value="isFavourite"
-            @change="toggleFavourite()"
-          />
+          {{ $dayjs().to($dayjs(post.createdAt)) }}
+
+          <a-space align="end" style="float: right">
+            {{ likesCount }}
+            <a-rate :count="1" :value="isLiked" @change="toggleLike()">
+              <a-icon slot="character" type="like" theme="filled"
+            /></a-rate>
+          </a-space>
         </template>
       </a-card-meta>
 
@@ -36,10 +37,10 @@
           <a-icon
             key="edit"
             type="edit"
-            @click="$router.push(`/product/${product.id}/update`)"
+            @click="$router.push(`/post/${post.id}/update`)"
           />
           <a-popconfirm
-            title="Are you sure delete this product?"
+            title="Are you sure delete this post?"
             ok-text="Yes"
             cancel-text="No"
             @confirm="handleDelete()"
@@ -53,15 +54,15 @@
     <a-modal
       v-model="modalVisible"
       :dialog-style="{ top: '20px' }"
-      :title="product.name"
+      :title="post.name"
       okText="View Author"
       @ok="handleViewAuthor"
     >
-      <Carousel :images="product.images" />
+      <Carousel :images="post.images" />
 
       <br />
       <h4>Description</h4>
-      <p>{{ product.description }}</p>
+      <p>{{ post.description }}</p>
     </a-modal>
   </div>
 </template>
@@ -72,10 +73,10 @@ import qs from "qs";
 export default {
   components: { Carousel },
 
-  name: "Product",
+  name: "Post",
 
   props: {
-    product: {
+    post: {
       type: Object,
       required: true,
     },
@@ -86,40 +87,41 @@ export default {
   },
 
   computed: {
-    isFavourite() {
-      return (
-        this.$auth.user.favouriteProducts?.some(
-          (el) => el.id === this.product.id
-        ) * 1
-      );
+    isLiked() {
+      return this.$auth.user?.likes.some((el) => el.id === this.post.id) * 1;
     },
   },
 
   data() {
     return {
       modalVisible: false,
+      likesCount: this.post.likedBy.length,
     };
   },
 
   methods: {
-    async toggleFavourite() {
-      let favouriteProducts = [];
+    async toggleLike() {
+      let likes = [];
 
-      if (this.isFavourite) {
-        for (let el of this.$auth.user.favouriteProducts) {
-          if (el.id !== this.product.id) {
-            favouriteProducts.push(el.id);
+      if (this.isLiked) {
+        for (let el of this.$auth.user.likes) {
+          if (el.id !== this.post.id) {
+            likes.push(el.id);
           }
         }
+
+        this.likesCount--;
       } else {
-        for (let el of this.$auth.user.favouriteProducts) {
-          favouriteProducts.push(el.id);
+        for (let el of this.$auth.user.likes) {
+          likes.push(el.id);
         }
-        favouriteProducts.push(this.product.id);
+        likes.push(this.post.id);
+
+        this.likesCount++;
       }
 
       await this.$axios.put(`/users/${this.$auth.user.id}`, {
-        favouriteProducts,
+        likes,
       });
 
       await this.$auth.fetchUser();
@@ -129,7 +131,7 @@ export default {
 
     async handleDelete() {
       try {
-        await this.$axios.delete(`/products/${this.product.id}`);
+        await this.$axios.delete(`/posts/${this.post.id}`);
         this.$emit("onDelete");
       } catch (err) {}
     },
@@ -137,8 +139,8 @@ export default {
     async handleViewAuthor() {
       const query = qs.stringify({
         filters: {
-          products: {
-            id: this.product.id,
+          posts: {
+            id: this.post.id,
           },
         },
       });
@@ -146,7 +148,7 @@ export default {
 
       const userId = res.data[0].id;
 
-      this.$router.push("/user/" + userId );
+      this.$router.push("/user/" + userId);
     },
   },
 };

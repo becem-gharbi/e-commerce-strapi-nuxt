@@ -63,12 +63,6 @@
       "inversedBy": "users",
       "configurable": false
     },
-    "products": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product",
-      "mappedBy": "user"
-    },
     "image": {
       "type": "media",
       "multiple": false,
@@ -82,11 +76,6 @@
       "required": false,
       "maxLength": 15
     },
-    "favouriteProducts": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::product.product"
-    },
     "facebookLink": {
       "type": "string"
     },
@@ -94,6 +83,18 @@
       "type": "component",
       "repeatable": false,
       "component": "location.location"
+    },
+    "likes": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::post.post",
+      "inversedBy": "likedBy"
+    },
+    "posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::post.post",
+      "mappedBy": "author"
     }
   }
 }

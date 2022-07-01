@@ -1,6 +1,9 @@
 <template>
   <div class="page-center">
-    <NuxtLink to="/"><h2>{{ $config.brand }}</h2></NuxtLink>
+    <NuxtLink to="/"
+      ><img :src="require('@/assets/logo.png')" height="40px"
+    /></NuxtLink>
+    <br />
     <br />
     <Nuxt />
     <br />

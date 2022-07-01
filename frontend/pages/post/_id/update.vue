@@ -26,12 +26,17 @@
           </a-select>
         </a-form-item>
 
-        <a-form-item label="Images">
-          <ImageUpload ref="imageUpload" :max="5" />
+        <a-form-item label="Image">
+          <ImageUpload ref="imageUpload" :images="images" :max="5" />
         </a-form-item>
 
         <a-form-item>
-          <ButtonAsync label="Create" htmlType="submit" icon="plus" block />
+          <ButtonAsync
+            label="Save Changes"
+            htmlType="submit"
+            icon="save"
+            block
+          />
         </a-form-item>
       </a-form>
     </a-col>
@@ -39,13 +44,26 @@
 </template>
 
 <script>
+import qs from "qs";
+
 export default {
-  data: function () {
+  async asyncData({ $axios, route }) {
+    const query = qs.stringify({
+      populate: {
+        images: "*",
+        category: "*",
+      },
+    });
+
+    const res = await $axios.get(`/posts/${route.params.id}?` + query);
+
     return {
-      name: "",
-      price: "",
-      description: "",
-      category: this.$store.state.categories[0].id,
+      id: res.data.data.id,
+      name: res.data.data.attributes.name,
+      price: res.data.data.attributes.price,
+      description: res.data.data.attributes.description,
+      category: res.data.data.attributes.category.data.id,
+      images: res.data.data.attributes.images.data,
     };
   },
 
@@ -53,18 +71,19 @@ export default {
     async handleSubmit() {
       try {
         const data = {
-          user: this.$auth.user.id,
           name: this.name,
           price: this.price,
           description: this.description,
           category: this.category,
-          currency: this.$store.state.currency,
         };
 
-        const res = await this.$axios.post("/products", { data });
+        const res = await this.$axios.put(
+          `/posts/${this.$route.params.id}`,
+          { data }
+        );
 
         await this.$refs.imageUpload.upload(
-          "api::product.product",
+          "api::post.post",
           res.data.data.id,
           "images"
         );
