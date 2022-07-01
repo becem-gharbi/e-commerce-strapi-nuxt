@@ -25,7 +25,12 @@
 
           <a-space align="end" style="float: right">
             {{ likesCount }}
-            <a-rate :count="1" :value="isLiked" @change="toggleLike()">
+            <a-rate
+              :count="1"
+              :value="isLiked * 1"
+              @change="toggleLike()"
+              :disabled="!$auth.loggedIn"
+            >
               <a-icon slot="character" type="like" theme="filled"
             /></a-rate>
           </a-space>
@@ -88,7 +93,9 @@ export default {
 
   computed: {
     isLiked() {
-      return this.$auth.user?.likes.some((el) => el.id === this.post.id) * 1;
+      return this.$auth.loggedIn
+        ? this.$auth.user.likes.some((el) => el.id === this.post.id)
+        : false;
     },
   },
 

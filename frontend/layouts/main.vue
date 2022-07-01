@@ -3,7 +3,7 @@
     <header>
       <div class="brand">
         <NuxtLink to="/"
-          ><img :src="require('@/assets/logo.png')" height="35px"
+          ><img :src="require('@/assets/logo.png')" height="30px"
         /></NuxtLink>
       </div>
       <div class="navigation">
@@ -57,5 +57,14 @@ header {
 }
 main {
   padding: 30px 10px;
+}
+@media (max-width: 576px) {
+  .brand {
+    display: none;
+  }
+  .navigation {
+    justify-content: end;
+    width: 100%;
+  }
 }
 </style>

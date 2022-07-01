@@ -29,7 +29,7 @@
         />
 
         Already have account?
-        <NuxtLink to="/user/login"> Login </NuxtLink>
+        <NuxtLink to="/user/login"> login </NuxtLink>
       </a-form-item>
       <a-divider>Or</a-divider>
       <a :href="googleLoginUrl"

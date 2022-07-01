@@ -2,7 +2,7 @@
   <div>
     <header>
       <div class="brand">
-        <img :src="require('@/assets/logo.png')" height="35px" />
+        <img :src="require('@/assets/logo.png')" height="30px" />
       </div>
       <div class="navigation">
         <NuxtLink
@@ -101,7 +101,7 @@ header {
 main {
   padding: 30px 10px;
 }
-@media (max-width: 570px) {
+@media (max-width: 576px) {
   .flex-btn {
     flex-direction: column;
   }

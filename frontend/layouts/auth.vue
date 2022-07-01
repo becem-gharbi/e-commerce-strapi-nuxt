@@ -1,7 +1,7 @@
 <template>
   <div class="page-center">
     <NuxtLink to="/"
-      ><img :src="require('@/assets/logo.png')" height="40px"
+      ><img :src="require('@/assets/logo.png')" height="35px"
     /></NuxtLink>
     <br />
     <br />

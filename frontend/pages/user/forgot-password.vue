@@ -10,7 +10,7 @@
           >Reset Password</a-button
         >
         Password remembered?
-        <NuxtLink to="/user/login"> Login </NuxtLink>
+        <NuxtLink to="/user/login"> login </NuxtLink>
       </a-form-item>
     </a-form>
   </a-card>

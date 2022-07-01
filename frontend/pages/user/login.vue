@@ -23,7 +23,7 @@
         />
 
         Don't have account?
-        <NuxtLink to="/user/register"> Register </NuxtLink>
+        <NuxtLink to="/user/register"> register </NuxtLink>
       </a-form-item>
 
       <a-divider>Or</a-divider>
