@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  auth: false,
+  auth: "guest",
   layout: "main",
 };
 </script>

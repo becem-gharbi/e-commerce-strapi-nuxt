@@ -6,7 +6,7 @@
 </template>
 <script>
 export default {
-  auth: false,
+  auth: "guest",
   layout: "auth",
   data() {
     return {
@@ -22,9 +22,7 @@ export default {
 
       const jwt = res.data.jwt;
 
-      await this.$auth.setUserToken(jwt);
-
-      this.$router.replace("/");
+      this.$auth.setUserToken(jwt);
     } catch (err) {
       this.$router.replace("/user/login");
       this.$message.error(err.response.data.error.message);

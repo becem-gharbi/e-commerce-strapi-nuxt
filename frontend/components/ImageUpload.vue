@@ -1,5 +1,5 @@
 <template>
-  <div class="clearfix">
+  <div>
     <a-upload
       list-type="picture-card"
       :file-list="fileList"

@@ -39,7 +39,7 @@
 
 <script>
 export default {
-  auth: false,
+  auth: "guest",
   layout: "auth",
 
   data: function () {
@@ -58,8 +58,6 @@ export default {
             password: this.password,
           },
         });
-        
-        this.$router.replace("/home");
       } catch (err) {
         if (err.response.data.error.details.errors) {
           this.$message.error(

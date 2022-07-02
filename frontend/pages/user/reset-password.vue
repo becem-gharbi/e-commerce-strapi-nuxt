@@ -16,7 +16,7 @@
           block
           style="margin: 1rem 0"
         />
-        
+
         Doesn't want to reset password?
         <NuxtLink to="/user/login"> Login </NuxtLink>
       </a-form-item>
@@ -26,7 +26,7 @@
 
 <script>
 export default {
-  auth: false,
+  auth: "guest",
   layout: "auth",
   data() {
     return {
