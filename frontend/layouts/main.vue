@@ -1,9 +1,5 @@
 <template>
-  <a-layout
-    id="components-layout-demo-top"
-    class="layout"
-    style="height: 100vh"
-  >
+  <a-layout id="components-layout-demo-top" class="layout">
     <a-layout-header>
       <NuxtLink to="/"
         ><img :src="require('@/assets/logo.png')" height="30px"
@@ -25,7 +21,7 @@
       <a
         href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
         target="_blank"
-        ><a-icon type="github" /> Open Source Project</a
+        ><a-button icon="github"> Open Source Project</a-button></a
       >
     </a-layout-footer>
   </a-layout>
