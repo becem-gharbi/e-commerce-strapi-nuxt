@@ -1,13 +1,19 @@
 <template>
-  <a-card :title="title" :bordered="false" size="small">
+  <a-card :title="title"  size="small">
     <a-space slot="extra">
-      <a-button icon="filter" @click="modalVisible = true">Filters</a-button>
-      <a-button v-if="editEnable" icon="plus" @click="handleAddPost()"
+      <a-button
+        v-if="editEnable"
+        icon="plus"
+        @click="handleAddPost()"
         >Add</a-button
       >
+      <a-button icon="filter" @click="modalVisible = true">Filters</a-button>
     </a-space>
 
-    <a-spin v-if="$fetchState.pending" />
+    <div v-if="$fetchState.pending" style="text-align: center">
+      <a-spin tip="Loading..." size="large" />
+    </div>
+
     <a-empty v-else-if="posts.length === 0" />
 
     <template v-else>

@@ -1,5 +1,9 @@
 <template>
-  <div>
+  <a-layout
+    id="components-layout-demo-top"
+    class="layout"
+    style="height: 100vh"
+  >
     <header>
       <div class="brand">
         <img :src="require('@/assets/logo.png')" height="30px" />
@@ -23,15 +27,19 @@
         </div>
       </div>
     </header>
-    <main><Nuxt /></main>
-    <footer>
+
+    <a-layout-content style="padding: 10px 5px">
+      <Nuxt />
+    </a-layout-content>
+
+    <a-layout-footer style="text-align: center">
       <a
         href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
         target="_blank"
-        ><a-button icon="github"> Open Source </a-button></a
+        ><a-icon type="github" /> Open Source Project</a
       >
-    </footer>
-  </div>
+    </a-layout-footer>
+  </a-layout>
 </template>
 
 <script>
@@ -66,11 +74,13 @@ header {
   background-color: white;
   box-shadow: 0 0 1px 0px #0352c9;
 }
+
 .brand {
   color: #474747;
   font-weight: 600;
   font-size: medium;
 }
+
 .navigation {
   display: flex;
   height: 50px;
@@ -96,17 +106,6 @@ header {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-main {
-  padding: 1rem 0.3rem;
-}
-
-footer {
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 
 @media (max-width: 576px) {
