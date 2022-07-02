@@ -23,20 +23,19 @@
         </div>
       </div>
     </header>
-    <main v-if="!$fetchState.pending"><Nuxt /></main>
+    <main><Nuxt /></main>
+    <footer>
+      <a
+        href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
+        target="_blank"
+        ><a-button icon="github"> Open Source </a-button></a
+      >
+    </footer>
   </div>
 </template>
 
 <script>
 export default {
-  fetchOnServer: false,
-
-  async fetch() {
-    if (!this.$store.state.initialized) {
-      await this.$store.dispatch("init");
-    }
-  },
-
   data: function () {
     return {
       paths: [
@@ -98,9 +97,18 @@ header {
   align-items: center;
   justify-content: center;
 }
+
 main {
-  padding: 30px 10px;
+  padding: 1rem 0.3rem;
 }
+
+footer {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
 @media (max-width: 576px) {
   .flex-btn {
     flex-direction: column;

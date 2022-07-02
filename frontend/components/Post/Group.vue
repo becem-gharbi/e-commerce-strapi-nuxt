@@ -11,7 +11,7 @@
     <a-empty v-else-if="posts.length === 0" />
 
     <template v-else>
-      <a-row :gutter="[13, 13]">
+      <a-row :gutter="[10, 10]">
         <a-col
           :xs="12"
           :sm="8"

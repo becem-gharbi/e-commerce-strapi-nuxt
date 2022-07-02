@@ -6,36 +6,31 @@
           ><img :src="require('@/assets/logo.png')" height="30px"
         /></NuxtLink>
       </div>
-      <div class="navigation">
-        <a
-          href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
-          target="_blank"
-          ><a-button icon="github"> Open Source </a-button></a
-        >
+      <a-space>
         <NuxtLink to="/user/login"><a-button>Login</a-button></NuxtLink>
         <NuxtLink to="/user/register"><a-button>Register</a-button></NuxtLink>
-      </div>
+      </a-space>
     </header>
-    <main v-if="!$fetchState.pending"><Nuxt /></main>
+    <main><Nuxt /></main>
+    <footer>
+      <a
+        href="https://github.com/becem-gharbi/e-commerce-strapi-nuxt"
+        target="_blank"
+        ><a-button icon="github"> Open Source </a-button></a
+      >
+    </footer>
   </div>
 </template>
 
 <script>
 export default {
   name: "MainLayout",
-  fetchOnServer: false,
-
-  async fetch() {
-    if (!this.$store.state.initialized) {
-      await this.$store.dispatch("init");
-    }
-  },
 };
 </script>
 
 <style scoped>
 header {
-  padding: 0 5px;
+  padding: 0.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -43,28 +38,15 @@ header {
   background-color: white;
   box-shadow: 0 0 1px 0px #0352c9;
 }
-.brand {
-  color: #474747;
-  font-weight: 600;
-  font-size: medium;
-}
-.navigation {
-  display: flex;
-  height: 50px;
-  flex-direction: row;
-  align-items: center;
-  gap: 5px;
-}
+
 main {
-  padding: 30px 10px;
+  padding: 1rem 0.3rem;
 }
-@media (max-width: 576px) {
-  .brand {
-    display: none;
-  }
-  .navigation {
-    justify-content: end;
-    width: 100%;
-  }
+
+footer {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 </style>
