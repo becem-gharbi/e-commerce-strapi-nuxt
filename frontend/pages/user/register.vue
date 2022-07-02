@@ -32,7 +32,7 @@
         <NuxtLink to="/user/login"> login </NuxtLink>
       </a-form-item>
       <a-divider>Or</a-divider>
-      <a :href="googleLoginUrl"
+      <a :href="`${$config.strapiUrl}/api/connect/google`"
         ><a-button html-type="button" type="danger" block
           >Register with Google</a-button
         ></a
@@ -47,7 +47,6 @@ export default {
   layout: "auth",
   data: function () {
     return {
-      googleLoginUrl: `${this.$config.strapiUrl}/api/connect/google`,
       email: "",
       password: "",
       passwordConfirmation: "",

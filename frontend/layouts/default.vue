@@ -40,7 +40,7 @@ export default {
   data: function () {
     return {
       paths: [
-        { name: "Home", route: "/", icon: "home" },
+        { name: "Home", route: "/home", icon: "home" },
         { name: "Dashboard", route: "/dashboard", icon: "appstore" },
         { name: "Activity", route: "/activity", icon: "history" },
         { name: "Account", route: "/user/update", icon: "user" },
@@ -51,7 +51,7 @@ export default {
   methods: {
     handleLogout() {
       this.$auth.logout();
-      this.$router.replace("/user/login");
+      this.$router.replace("/");
     },
   },
 };

@@ -31,7 +31,7 @@
               @change="toggleLike()"
               :disabled="!$auth.loggedIn"
             >
-              <a-icon slot="character" type="like" theme="filled"
+              <a-icon slot="character" type="star" theme="filled"
             /></a-rate>
           </a-space>
         </template>
@@ -64,7 +64,7 @@
       <Carousel :images="post.images" />
 
       <br />
-      <h4>Description</h4>
+      <strong>Description</strong>
       <p>{{ post.description }}</p>
     </a-modal>
   </div>

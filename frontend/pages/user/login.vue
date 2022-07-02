@@ -28,7 +28,7 @@
 
       <a-divider>Or</a-divider>
 
-      <a :href="googleLoginUrl"
+      <a :href="`${$config.strapiUrl}/api/connect/google`"
         ><a-button html-type="button" type="danger" block
           >Login with Google</a-button
         ></a
@@ -44,7 +44,6 @@ export default {
 
   data: function () {
     return {
-      googleLoginUrl: `${this.$config.strapiUrl}/api/connect/google`,
       identifier: "",
       password: "",
       remember: "",
@@ -59,7 +58,8 @@ export default {
             password: this.password,
           },
         });
-        this.$router.replace("/");
+        
+        this.$router.replace("/home");
       } catch (err) {
         if (err.response.data.error.details.errors) {
           this.$message.error(

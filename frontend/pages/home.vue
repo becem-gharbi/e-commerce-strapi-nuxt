@@ -13,7 +13,6 @@
 
 <script>
 export default {
-  auth: false,
-  layout: "main",
+  auth: true,
 };
 </script>

@@ -56,10 +56,11 @@ export default {
     // Options
     redirect: {
       login: '/user/login',
-      logout: false,
+      logout: '/',
       callback: false,
-      home: '/',
+      home: '/home',
     },
+
     strategies: {
       local: {
         token: {
@@ -81,6 +82,7 @@ export default {
         },
       },
     },
+
   },
 
   router: {
