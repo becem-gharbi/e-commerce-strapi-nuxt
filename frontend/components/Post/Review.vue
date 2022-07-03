@@ -1,7 +1,11 @@
 <template>
   <a-space align="end">
-    <a-rate v-model="note" @change="handleChange" :disabled="!$auth.loggedIn" />
-    {{ reviewsCount }}
+    <a-rate
+      v-model="note"
+      @change="handleChange"
+      :disabled="!$auth.loggedIn"
+      :style="{ fontSize: '1rem' }"
+    />{{ "(" + reviewsCount + ")" }}
   </a-space>
 </template>
 

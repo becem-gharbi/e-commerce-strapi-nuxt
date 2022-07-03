@@ -19,7 +19,7 @@ module.exports = ({ env }) => ([
     config: {
       enabled: true,
       headers: '*',
-      origin: [env('ADMIN_WEBSITE'), env("USER_WEBSITE")]
+      origin: [env('STRAPI_URL'), env("NUXT_URL")]
     }
   },
   'strapi::poweredBy',
