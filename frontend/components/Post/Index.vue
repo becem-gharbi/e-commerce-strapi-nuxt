@@ -20,21 +20,7 @@
           {{ post.name }}
         </template>
 
-        <template slot="description">
-          {{ $dayjs().to($dayjs(post.createdAt)) }}
-
-          <a-space align="end" style="float: right">
-            {{ likesCount }}
-            <a-rate
-              :count="1"
-              :value="isLiked * 1"
-              @change="toggleLike()"
-              :disabled="!$auth.loggedIn"
-            >
-              <a-icon slot="character" type="star" theme="filled"
-            /></a-rate>
-          </a-space>
-        </template>
+        <PostReview slot="description" :postId="post.id" />
       </a-card-meta>
 
       <template v-if="editEnable" slot="actions" class="ant-card-actions">
@@ -65,6 +51,9 @@
 
       <br />
       <strong>Description</strong>
+      <i style="float: right">
+        {{ $dayjs().to($dayjs(post.createdAt)) }}
+      </i>
       <p>{{ post.description }}</p>
     </a-modal>
   </div>
@@ -89,51 +78,13 @@ export default {
     },
   },
 
-  computed: {
-    isLiked() {
-      return this.$auth.loggedIn
-        ? this.$auth.user.likes.some((el) => el.id === this.post.id)
-        : false;
-    },
-  },
-
   data() {
     return {
       modalVisible: false,
-      likesCount: this.post.likedBy.length,
     };
   },
 
   methods: {
-    async toggleLike() {
-      let likes = [];
-
-      if (this.isLiked) {
-        for (let el of this.$auth.user.likes) {
-          if (el.id !== this.post.id) {
-            likes.push(el.id);
-          }
-        }
-
-        this.likesCount--;
-      } else {
-        for (let el of this.$auth.user.likes) {
-          likes.push(el.id);
-        }
-        likes.push(this.post.id);
-
-        this.likesCount++;
-      }
-
-      await this.$axios.put(`/users/${this.$auth.user.id}`, {
-        likes,
-      });
-
-      await this.$auth.fetchUser();
-
-      this.modalVisible = false;
-    },
-
     async handleDelete() {
       try {
         await this.$axios.delete(`/posts/${this.post.id}`);

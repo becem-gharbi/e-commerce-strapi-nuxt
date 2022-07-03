@@ -54,7 +54,7 @@ export default {
   methods: {
     handleLogout() {
       this.$auth.logout();
-      this.$router.replace("/");
+      this.$router.replace("/user/login");
     },
   },
 };
@@ -90,7 +90,7 @@ header {
   justify-content: center;
   align-items: center;
   font-size: 1em;
-  margin: auto 7px;
+  margin: auto 5px;
   color: #474747;
 }
 .flex-btn span {

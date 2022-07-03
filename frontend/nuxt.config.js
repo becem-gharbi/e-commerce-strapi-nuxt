@@ -93,6 +93,7 @@ export default {
   },
 
   publicRuntimeConfig: {
+    countryCode: process.env.COUNTRY_CODE,
     strapiUrl: process.env.STRAPI_URL,
     ipInfoToken: process.env.IPINFO_TOKEN,
     uploadBaseUrl:

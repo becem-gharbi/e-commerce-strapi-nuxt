@@ -1,10 +1,7 @@
 <template>
-  <a-card :title="title"  size="small">
+  <a-card :title="title" size="small">
     <a-space slot="extra">
-      <a-button
-        v-if="editEnable"
-        icon="plus"
-        @click="handleAddPost()"
+      <a-button v-if="editEnable" icon="plus" @click="handleAddPost()"
         >Add</a-button
       >
       <a-button icon="filter" @click="modalVisible = true">Filters</a-button>
@@ -58,6 +55,7 @@ export default {
     inFilters: {
       default: () => ({}),
     },
+    
     editEnable: {
       type: Boolean,
       default: false,
@@ -92,10 +90,6 @@ export default {
       pagination: this.pagination,
       populate: {
         images: "*",
-        likedBy: "*",
-        author: {
-          populate: "image",
-        },
       },
       sort: ["updatedAt:desc"],
     });
@@ -113,7 +107,6 @@ export default {
         createdAt: post.attributes.createdAt,
         currency: post.attributes.currency,
         description: post.attributes.description,
-        likedBy: post.attributes.likedBy.data,
       });
     });
 

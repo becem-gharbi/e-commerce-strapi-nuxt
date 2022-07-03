@@ -18,8 +18,15 @@ export const actions = {
             const categories = res.data.data;
             commit('SET_CATEGORIES', categories);
 
-            res = await this.$axios.get(`https://ipinfo.io/?token=${this.$config.ipInfoToken}`);
-            const countryCode = res.data.country;
+            let countryCode;
+
+            if (process.env.NODE_ENV === 'production') {
+                res = await this.$axios.get(`https://ipinfo.io/?token=${this.$config.ipInfoToken}`);
+                countryCode = res.data.country;
+            }
+            else {
+                countryCode = this.$config.countryCode;
+            }
 
             for (let el of countries) {
                 if (el.iso2 === countryCode) {

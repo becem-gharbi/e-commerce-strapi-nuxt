@@ -10,7 +10,7 @@ module.exports = (plugin) => {
         const user = await strapi.entityService.findOne(
             'plugin::users-permissions.user',
             ctx.state.user.id,
-            { populate: ['image', 'location', 'likes'] }
+            { populate: ['image', 'location'] }
         );
 
         const {

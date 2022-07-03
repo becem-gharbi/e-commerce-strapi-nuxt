@@ -37,11 +37,11 @@
       "relation": "oneToOne",
       "target": "api::category.category"
     },
-    "likedBy": {
+    "reviews": {
       "type": "relation",
-      "relation": "manyToMany",
-      "target": "plugin::users-permissions.user",
-      "mappedBy": "likes"
+      "relation": "oneToMany",
+      "target": "api::review.review",
+      "mappedBy": "post"
     },
     "author": {
       "type": "relation",

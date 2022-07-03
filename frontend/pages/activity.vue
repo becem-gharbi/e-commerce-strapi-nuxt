@@ -1,24 +1,10 @@
 <template>
   <PostGroup
-    title="Liked Posts"
+    title="My Reviews"
     :inFilters="{
-      id: {
-        $in: likes,
+      reviews: {
+        user: $auth.user.id,
       },
     }"
   />
 </template>
-
-<script>
-export default {
-  computed: {
-    likes() {
-      let data = [-1];
-      for (let el of this.$auth.user.likes) {
-        data.push(el.id);
-      }
-      return data;
-    },
-  },
-};
-</script>
