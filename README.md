@@ -1,39 +1,24 @@
 ﻿# Marketplace Strapi Nuxt
 
-This project is a getting started with Strapi.
+The purpose of this project is to get started with strapi by building a marketplace platform. 
 
-Strapi is an open source headless Content Management System, meaning it focuses on the backend. It enables the design of the data models and the generation of the api layer from an admin panel.
-
-The goal of this project is to build a template of a general purpose platform. As for the demo below, the marketplace use case was selected.
+Strapi is an open source headless Content Management System, meaning it focuses on the backend. It enables the design of the data models and the generation of the api layer from an admin ui.
 
 ## Demo
 
 Live preview: https://e-commerce-strapi.netlify.app/
 
-## Features
+![alt text](https://e-commerce-strapi.netlify.app/screenshot.bmp)
 
-- User Authentication with email/password & with Google Auth.
-- Post review.
-- Nuxt v2 as JS framework
-- Ant Design Vue v1 as UI library.
-- Responsive design.
-- Supports serverless deployment with GCP.
+## Technologies
+
+- Headless CMS: Strapi v4
+- Frontend framework: Nuxt v2
+- UI library: Ant Design Vue v1
 
 ## Environment Variables
 
-To run this project, you will need to add the following environment variables to your .env files
-
-In fontend directory:
-`STRAPI_URL`
-`IPINFO_TOKEN`
-
-In backend directory:
-`APP_KEYS`
-`API_TOKEN_SALT`
-`ADMIN_JWT_SECRET`
-`JWT_SECRET`
-`SENDGRID_API_KEY`
-`SENDGRID_SENDER_EMAIL`
+To run this project, you will need to add the environment variables to your .env files. Please refer to .env.example files.
 
 ## Run Locally
 
@@ -73,7 +58,13 @@ Install dependencies
   npm install
 ```
 
-Start the server
+Create the uploads directory
+
+```bash
+  mkdir public/uploads
+```
+
+Start the frontend server
 
 ```bash
   npm run dev
